@@ -1,0 +1,21 @@
+package com.unitau.tgvinicius.entities;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+public class Issue {
+	DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+	private String id;
+	private String name;
+	private boolean state;
+	private LocalDate creation;
+	
+	@ManyToOne
+    @JoinColumn(name = "repository_id")
+    private Repository repository;
+	
+}

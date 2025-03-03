@@ -1,0 +1,48 @@
+package com.unitau.tgvinicius.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_branch")
+public class Branch {
+	private String name;
+	private String lastCommitSha;
+	
+	@ManyToOne
+    @JoinColumn(name = "repository_id")
+    private Repository repository;
+
+	public Branch(String name, String lastCommitSha, Repository repository) {
+		this.name = name;
+		this.lastCommitSha = lastCommitSha;
+		this.repository = repository;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLastCommitSha() {
+		return lastCommitSha;
+	}
+
+	public void setLastCommitSha(String lastCommitSha) {
+		this.lastCommitSha = lastCommitSha;
+	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+
+}

@@ -1,0 +1,76 @@
+package com.unitau.tgvinicius.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_user")
+public class User {
+	
+
+	@Id
+	private String id;
+	private String login;
+	private String name;
+	private Integer commits;
+
+	@ManyToMany
+    @JoinTable(
+            name = "user_repository",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "repository_id")
+    )
+	private Set<Repository> repositories = new HashSet<>();
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Commit> commitsList = new HashSet<>();
+
+	public User(String id, String userName, String name, int commits) {
+		this.id = id;
+		this.login = userName;
+		this.name = name;
+		this.commits = commits;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getUserName() {
+		return login;
+	}
+
+	public void setUserName(String userName) {
+		this.login = userName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getCommits() {
+		return commits;
+	}
+
+	public void setCommits(int commits) {
+		this.commits = commits;
+	}
+
+}

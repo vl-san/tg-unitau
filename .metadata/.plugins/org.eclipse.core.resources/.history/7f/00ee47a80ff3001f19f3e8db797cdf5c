@@ -1,0 +1,12 @@
+package com.unitau.tgvinicius;
+
+import java.time.LocalDate;
+
+public class Commits {
+	private String id;
+	private String authorName;
+	private LocalDate creation;
+
+	private User user;
+
+}

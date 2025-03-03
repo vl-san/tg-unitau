@@ -1,0 +1,13 @@
+package com.unitau.tgvinicius.entities;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Issue {
+	DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+	private String name;
+	private boolean state;
+	private LocalDate creation;
+	
+}

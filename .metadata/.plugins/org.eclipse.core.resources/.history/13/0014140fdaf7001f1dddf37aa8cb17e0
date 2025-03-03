@@ -1,0 +1,5 @@
+package com.unitau.tgvinicius.enums;
+
+public class IssueState {
+
+}

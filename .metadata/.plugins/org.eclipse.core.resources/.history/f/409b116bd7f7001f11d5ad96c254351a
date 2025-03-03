@@ -1,0 +1,88 @@
+package com.unitau.tgvinicius.entities;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_issue")
+public class Issue {
+	DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+	@Id
+	private String id;
+	private String name;
+	private boolean state;
+	private LocalDate creation;
+	
+	@ManyToOne
+    @JoinColumn(name = "repository_id")
+    private Repository repository;
+
+	public Issue(DateTimeFormatter fmt, String id, String name, boolean state, LocalDate creation,
+			Repository repository) {
+		super();
+		this.fmt = fmt;
+		this.id = id;
+		this.name = name;
+		this.state = state;
+		this.creation = creation;
+		this.repository = repository;
+	}
+
+	public DateTimeFormatter getFmt() {
+		return fmt;
+	}
+
+	public void setFmt(DateTimeFormatter fmt) {
+		this.fmt = fmt;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public boolean isState() {
+		return state;
+	}
+
+	public void setState(boolean state) {
+		this.state = state;
+	}
+
+	public LocalDate getCreation() {
+		return creation;
+	}
+
+	public void setCreation(LocalDate creation) {
+		this.creation = creation;
+	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+	
+	
+	
+}

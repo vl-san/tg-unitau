@@ -1,0 +1,56 @@
+package com.unitau.tgvinicius;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_user")
+public class User {
+
+	@Id
+	private String id;
+	private String userName;
+	private String name;
+	private Integer commits;
+
+	public User(String id, String userName, String name, int commits) {
+		this.id = id;
+		this.userName = userName;
+		this.name = name;
+		this.commits = commits;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getCommits() {
+		return commits;
+	}
+
+	public void setCommits(int commits) {
+		this.commits = commits;
+	}
+
+}
