@@ -12,16 +12,24 @@ public class Branch {
 	@Id
 	private String id;
 	private String name;
-	private String lastCommitSha;
-	
-	@ManyToOne
-    @JoinColumn(name = "repository_id")
-    private Repository repository;
 
-	public Branch(String name, String lastCommitSha, Repository repository) {
+	@ManyToOne
+	@JoinColumn(name = "repository_id")
+	private Repository repository;
+
+	@ManyToOne
+	@JoinColumn(name = "commit_id")
+	private Commit lastCommit;
+
+	public Branch(String id, String name, Repository repository, Commit lastCommit) {
+		this.id = id;
 		this.name = name;
-		this.lastCommitSha = lastCommitSha;
 		this.repository = repository;
+		this.lastCommit = lastCommit;
+	}
+
+	public Branch() {
+
 	}
 
 	public String getName() {
@@ -30,14 +38,6 @@ public class Branch {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getLastCommitSha() {
-		return lastCommitSha;
-	}
-
-	public void setLastCommitSha(String lastCommitSha) {
-		this.lastCommitSha = lastCommitSha;
 	}
 
 	public Repository getRepository() {

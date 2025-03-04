@@ -28,13 +28,21 @@ public class Issue {
 	@JoinColumn(name = "repository_id")
 	private Repository repository;
 
-	public Issue(String id, String name, IssueState state, LocalDate creation, Repository repository) {
-		super();
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	public Issue(String id, String name, IssueState state, LocalDate creation, Repository repository, User user) {
 		this.id = id;
 		this.name = name;
 		this.state = state;
 		this.creation = creation;
 		this.repository = repository;
+		this.user = user;
+	}
+
+	public Issue() {
+
 	}
 
 	public String getId() {

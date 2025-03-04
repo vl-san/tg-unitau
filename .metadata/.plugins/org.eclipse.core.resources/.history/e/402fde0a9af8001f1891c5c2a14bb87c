@@ -1,0 +1,81 @@
+package com.unitau.tgvinicius.config;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+import com.unitau.tgvinicius.entities.Branch;
+import com.unitau.tgvinicius.entities.Commit;
+import com.unitau.tgvinicius.entities.Issue;
+import com.unitau.tgvinicius.entities.Repository;
+import com.unitau.tgvinicius.repositories.BranchRepository;
+import com.unitau.tgvinicius.repositories.CommitRepository;
+import com.unitau.tgvinicius.repositories.IssueRepository;
+import com.unitau.tgvinicius.repositories.RepositoryRepository;
+import com.unitau.tgvinicius.repositories.UserRepository;
+
+@Configuration
+@Profile("test")
+public class TestConfig implements CommandLineRunner {
+
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private RepositoryRepository repositoryRepository;
+	@Autowired
+	private BranchRepository branchRepository;
+	@Autowired
+	private CommitRepository commitRepository;
+	@Autowired
+	private IssueRepository issueRepository;
+	
+	@Override
+	public void run(String... args) throws Exception {
+		
+		repositoryRepository.deleteAll();
+	    userRepository.deleteAll();
+		branchRepository.deleteAll();
+		commitRepository.deleteAll();
+		issueRepository.deleteAll();
+		
+
+//	    Repository r1 = new Repository("repo123", "MeuRepo", "Descrição", 12, 5, 2, LocalDate.now(), LocalDate.now());
+//	    repositoryRepository.save(r1);
+
+//		User u1 = new User("cs2", "vlsan_", "Vinícius Leonardo dos Santos", 12);
+//		User u2 = new User("cs1", "zerinho", "Juscicleyson da Silva Nunes", 71);
+//		userRepository.saveAll(Arrays.asList(u1, u2));
+		
+		// 🔹 CRIA UM REPOSITÓRIO PARA VINCULAR AS OUTRAS ENTIDADES
+        Repository repo = new Repository(
+            UUID.randomUUID().toString(), "MeuRepo", "Descrição do repositório",
+            10, 5, 2, LocalDate.now(), LocalDate.now()
+        );
+        repositoryRepository.save(repo);
+
+        // 🔹 TESTE: SALVAR BRANCHES
+        Branch b1 = new Branch(UUID.randomUUID().toString(), "main", "abc123", repo);
+        Branch b2 = new Branch(UUID.randomUUID().toString(), "develop", "xyz789", repo);
+        branchRepository.saveAll(Arrays.asList(b1, b2));
+
+        // 🔹 TESTE: SALVAR COMMITS
+        Commit c1 = new Commit(UUID.randomUUID().toString(), "Alice", LocalDate.now(), repo);
+        Commit c2 = new Commit(UUID.randomUUID().toString(), "Bob", LocalDate.now(), repo);
+        commitRepository.saveAll(Arrays.asList(c1, c2));
+
+        // 🔹 TESTE: SALVAR ISSUES
+        Issue i1 = new Issue(UUID.randomUUID().toString(), "Bug crítico", true, LocalDate.now(), repo);
+        Issue i2 = new Issue(UUID.randomUUID().toString(), "Nova feature", false, LocalDate.now(), repo);
+        issueRepository.saveAll(Arrays.asList(i1, i2));
+
+        System.out.println("✅ Testes de Branch, Commit e Issue concluídos!");
+		
+		
+	}
+
+}

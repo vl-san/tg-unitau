@@ -49,6 +49,10 @@ public class Repository {
 		this.creation = creation;
 		this.lastUpdate = lastUpdate;
 	}
+	
+	public Repository() {
+		
+	}
 
 	public String getId() {
 		return id;

@@ -15,7 +15,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_user")
 public class User {
-	
 
 	@Id
 	private String id;
@@ -24,21 +23,21 @@ public class User {
 	private Integer commits;
 
 	@ManyToMany
-    @JoinTable(
-            name = "user_repository",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "repository_id")
-    )
+	@JoinTable(name = "user_repository", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "repository_id"))
 	private Set<Repository> repositories = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Commit> commitsList = new HashSet<>();
+	private Set<Commit> commitsList = new HashSet<>();
 
 	public User(String id, String userName, String name, int commits) {
 		this.id = id;
 		this.login = userName;
 		this.name = name;
 		this.commits = commits;
+	}
+
+	public User() {
+
 	}
 
 	public String getId() {
@@ -49,12 +48,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUserName() {
+	public String getLogin() {
 		return login;
 	}
 
-	public void setUserName(String userName) {
-		this.login = userName;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getName() {
@@ -65,12 +64,28 @@ public class User {
 		this.name = name;
 	}
 
-	public int getCommits() {
+	public Integer getCommits() {
 		return commits;
 	}
 
-	public void setCommits(int commits) {
+	public void setCommits(Integer commits) {
 		this.commits = commits;
+	}
+
+	public Set<Repository> getRepositories() {
+		return repositories;
+	}
+
+	public void setRepositories(Set<Repository> repositories) {
+		this.repositories = repositories;
+	}
+
+	public Set<Commit> getCommitsList() {
+		return commitsList;
+	}
+
+	public void setCommitsList(Set<Commit> commitsList) {
+		this.commitsList = commitsList;
 	}
 
 }
