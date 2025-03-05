@@ -1,0 +1,8 @@
+package com.unitau.tgvinicius.services;
+
+import com.unitau.tgvinicius.repositories.UserRepository;
+
+public class UserService {
+
+	private UserRepository repository;
+}

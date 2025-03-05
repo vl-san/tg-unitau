@@ -3,6 +3,8 @@ package com.unitau.tgvinicius.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,20 +22,19 @@ public class User {
 	private String id;
 	private String login;
 	private String name;
-	private Integer commits;
 
 	@ManyToMany
 	@JoinTable(name = "user_repository", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "repository_id"))
-	private Set<Repository> repositories = new HashSet<>();
+	private Set<Repository> repository = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
 	private Set<Commit> commitsList = new HashSet<>();
 
-	public User(String id, String userName, String name, int commits) {
+	public User(String id, String userName, String name) {
 		this.id = id;
 		this.login = userName;
 		this.name = name;
-		this.commits = commits;
 	}
 
 	public User() {
@@ -64,20 +65,12 @@ public class User {
 		this.name = name;
 	}
 
-	public Integer getCommits() {
-		return commits;
+	public Set<Repository> getRepository() {
+		return repository;
 	}
 
-	public void setCommits(Integer commits) {
-		this.commits = commits;
-	}
-
-	public Set<Repository> getRepositories() {
-		return repositories;
-	}
-
-	public void setRepositories(Set<Repository> repositories) {
-		this.repositories = repositories;
+	public void setrepository(Set<Repository> repositories) {
+		this.repository = repositories;
 	}
 
 	public Set<Commit> getCommitsList() {

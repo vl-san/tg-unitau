@@ -26,7 +26,7 @@ public class Repository {
 	private LocalDate creation;
 	private LocalDate lastUpdate;
 
-	@ManyToMany(mappedBy = "repositories")
+	@ManyToMany(mappedBy = "repository")
     private Set<User> users = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)

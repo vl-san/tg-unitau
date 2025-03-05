@@ -49,8 +49,15 @@ public class TestConfig implements CommandLineRunner {
 	    repositoryRepository.save(repo);
 
 	    // Criando usuários
-	    User u1 = new User("user1", "vlsan_", "Vinícius Leonardo dos Santos", 12);
-	    User u2 = new User("user2", "zerinho", "Juscicleyson da Silva Nunes", 71);
+	    User u1 = new User("user1", "vlsan_", "Vinícius Leonardo dos Santos");
+	    User u2 = new User("user2", "zerinho", "Juscicleyson da Silva Nunes");
+	    userRepository.saveAll(Arrays.asList(u1, u2));
+	    
+	 // Associando os usuários ao repositório
+	    u1.getRepository().add(repo);
+	    u2.getRepository().add(repo);
+
+	    // Salvando os usuários com a associação
 	    userRepository.saveAll(Arrays.asList(u1, u2));
 
 	    // Criando commits com usuário e repositório vinculados

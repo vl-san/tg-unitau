@@ -1,0 +1,5 @@
+package com.unitau.tgvinicius.services;
+
+public class UserService {
+
+}
