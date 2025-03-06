@@ -1,0 +1,19 @@
+package com.unitau.tgvinicius.dto;
+
+import java.time.LocalDate;
+
+public class CommitDTO {
+	private String id;
+	private String authorName;
+	private LocalDate creation;
+
+	public CommitDTO() {
+	}
+
+	public CommitDTO(String id, String authorName, LocalDate creation) {
+		this.id = id;
+		this.authorName = authorName;
+		this.creation = creation;
+	}
+
+}

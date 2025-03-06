@@ -18,8 +18,8 @@ public class BranchService {
 		return branchRepository.findAll();
 	}
 //Precisa ter ID em um branch?
-//	public Branch findById(String id) {
-//		Optional<Branch> obj = branchRepository.findById(id);
-//		return obj.get();
-//	}
+	public Branch findById(String id) {
+		Optional<Branch> obj = branchRepository.findById(id);
+		return obj.get();
+	}
 }

@@ -31,9 +31,9 @@ public class User {
 	@JsonManagedReference
 	private Set<Commit> commitsList = new HashSet<>();
 
-	public User(String id, String userName, String name) {
+	public User(String id, String login, String name) {
 		this.id = id;
-		this.login = userName;
+		this.login = login;
 		this.name = name;
 	}
 

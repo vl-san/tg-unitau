@@ -1,0 +1,30 @@
+package com.unitau.tgvinicius.dto;
+
+import java.time.LocalDate;
+
+public class RepositoryDTO {
+    private String id;
+    private String name;
+    private String description;
+    private Integer stars;
+    private Integer forks;
+    private Integer openIssues;
+    private LocalDate creation;
+    private LocalDate lastUpdate;
+
+    public RepositoryDTO() {}
+
+    public RepositoryDTO(String id, String name, String description, Integer stars, Integer forks,
+                         Integer openIssues, LocalDate creation, LocalDate lastUpdate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.stars = stars;
+        this.forks = forks;
+        this.openIssues = openIssues;
+        this.creation = creation;
+        this.lastUpdate = lastUpdate;
+    }
+
+    // Getters e Setters
+}
