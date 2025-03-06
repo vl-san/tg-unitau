@@ -1,0 +1,32 @@
+package com.unitau.tgvinicius.resources;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.unitau.tgvinicius.entities.Repository;
+import com.unitau.tgvinicius.services.RepositoryService;
+
+@RestController
+@RequestMapping(value = "/repositories")
+public class RepositoryResource {
+	@Autowired
+	private RepositoryService repositoryService;
+
+	@GetMapping
+	public ResponseEntity<List<Repository>> findAll() {
+		List<Repository> list = repositoryService.findAll();
+		return ResponseEntity.ok().body(list);
+	}
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Repository> FindById(@PathVariable String id) {
+		Repository obj = repositoryService.findById(id);
+		return ResponseEntity.ok().body(obj);
+	}
+}

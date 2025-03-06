@@ -23,4 +23,25 @@ public class IssueService {
 		Optional<Issue> obj = issueRepository.findById(id);
 		return obj.get();
 	}
+	
+	public Issue insert(Issue obj) {
+		return issueRepository.save(obj);
+	}
+
+	public void delete(String id) {
+		issueRepository.deleteById(id);
+	}
+
+	public Issue update(String id, Issue obj) {
+		Issue entity = issueRepository.getReferenceById(id);
+		updateData(entity, obj);
+		return issueRepository.save(entity);
+	}
+
+	private void updateData(Issue entity, Issue obj) {
+		// entity.setId(obj.getId());
+		entity.setName(obj.getName());
+		entity.setState(obj.getState());
+		entity.setCreation(obj.getCreation());
+	}
 }

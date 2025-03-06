@@ -17,9 +17,28 @@ public class BranchService {
 	public List<Branch> findAll() {
 		return branchRepository.findAll();
 	}
-//Precisa ter ID em um branch?
+
 	public Branch findById(String id) {
 		Optional<Branch> obj = branchRepository.findById(id);
 		return obj.get();
+	}
+
+	public Branch insert(Branch obj) {
+		return branchRepository.save(obj);
+	}
+
+	public void delete(String id) {
+		branchRepository.deleteById(id);
+	}
+
+	public Branch update(String id, Branch obj) {
+		Branch entity = branchRepository.getReferenceById(id);
+		updateData(entity, obj);
+		return branchRepository.save(entity);
+	}
+
+	private void updateData(Branch entity, Branch obj) {
+		// entity.setId(obj.getId());
+		entity.setName(obj.getName());
 	}
 }

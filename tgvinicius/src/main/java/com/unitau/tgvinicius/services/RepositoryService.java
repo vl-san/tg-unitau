@@ -24,4 +24,28 @@ public class RepositoryService {
 		return obj.get();
 	}
 
+	public Repository insert(Repository obj) {
+		return repositoryRepository.save(obj);
+	}
+
+	public void delete(String id) {
+		repositoryRepository.deleteById(id);
+	}
+
+	public Repository update(String id, Repository obj) {
+		Repository entity = repositoryRepository.getReferenceById(id);
+		updateData(entity, obj);
+		return repositoryRepository.save(entity);
+	}
+
+	private void updateData(Repository entity, Repository obj) {
+		// entity.setId(obj.getId());
+		entity.setName(obj.getName());
+		entity.setDescription(obj.getDescription());
+		entity.setStars(obj.getStars());
+		entity.setForks(obj.getForks());
+		entity.setOpenIssues(obj.getOpenIssues());
+		entity.setCreation(obj.getCreation());
+		entity.setLastUpdate(obj.getLastUpdate());
+	}
 }

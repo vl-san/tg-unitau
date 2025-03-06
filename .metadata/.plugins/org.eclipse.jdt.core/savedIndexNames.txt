@@ -27,8 +27,8 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 4155244217.index
 24035951.index
 2036882919.index
-1256666249.index
 3620526585.index
+1256666249.index
 2242479710.index
 3722281348.index
 889165013.index
@@ -46,8 +46,8 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 1494773200.index
 4241780265.index
 4194073681.index
-153584835.index
 3984522690.index
+153584835.index
 1577571073.index
 344404771.index
 2952284885.index

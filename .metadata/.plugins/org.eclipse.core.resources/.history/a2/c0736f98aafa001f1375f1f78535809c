@@ -1,0 +1,43 @@
+package com.unitau.tgvinicius.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.unitau.tgvinicius.entities.Repository;
+import com.unitau.tgvinicius.entities.User;
+import com.unitau.tgvinicius.repositories.RepositoryRepository;
+
+@Service
+public class RepositoryService {
+
+	@Autowired
+	private RepositoryRepository repositoryRepository;
+
+	public List<Repository> findAll() {
+		return repositoryRepository.findAll();
+	}
+
+	public Repository findById(String id) {
+		Optional<Repository> obj = repositoryRepository.findById(id);
+		return obj.get();
+	}
+
+	public void delete(String id) {
+		repositoryRepository.deleteById(id);
+	}
+
+	public User update(String id, Repository obj) {
+		User entity = repositoryRepository.getReferenceById(id);
+		updateData(entity, obj);
+		return repositoryRepository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {
+		//entity.setId(obj.getId());
+		entity.setLogin(obj.getLogin());
+		entity.setName(obj.getName());
+	}
+}

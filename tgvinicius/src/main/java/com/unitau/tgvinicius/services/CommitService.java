@@ -23,4 +23,24 @@ public class CommitService {
 		Optional<Commit> obj = commitRepository.findById(id);
 		return obj.get();
 	}
+
+	public Commit insert(Commit obj) {
+		return commitRepository.save(obj);
+	}
+
+	public void delete(String id) {
+		commitRepository.deleteById(id);
+	}
+
+	public Commit update(String id, Commit obj) {
+		Commit entity = commitRepository.getReferenceById(id);
+		updateData(entity, obj);
+		return commitRepository.save(entity);
+	}
+
+	private void updateData(Commit entity, Commit obj) {
+		// entity.setId(obj.getId());
+		entity.setAuthorName(obj.getAuthorName());
+		entity.setCreation(obj.getCreation());
+	}
 }

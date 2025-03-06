@@ -32,6 +32,14 @@ public class Branch {
 
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -47,5 +55,15 @@ public class Branch {
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
+
+	public Commit getLastCommit() {
+		return lastCommit;
+	}
+
+	public void setLastCommit(Commit lastCommit) {
+		this.lastCommit = lastCommit;
+	}
+
+
 
 }
