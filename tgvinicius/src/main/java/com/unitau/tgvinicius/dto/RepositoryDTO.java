@@ -1,7 +1,6 @@
 package com.unitau.tgvinicius.dto;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class RepositoryDTO {
 	private String id;

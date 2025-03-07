@@ -1,7 +1,6 @@
 package com.unitau.tgvinicius.entities;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,19 +26,22 @@ public class Repository {
 	private LocalDate lastUpdate;
 
 	@ManyToMany(mappedBy = "repository")
-    private Set<User> users = new HashSet<>();
+	private Set<User> users = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Branch> branches = new HashSet<>();
-	
+	private Set<Branch> branches = new HashSet<>();
+
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Commit> commitsList = new HashSet<>();
-	
+	private Set<Commit> commitsList = new HashSet<>();
+
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Issue> issuesList = new HashSet<>();
-	
-	public Repository(String id, String name, String description, Integer stars, Integer forks,
-			Integer openIssues, LocalDate creation, LocalDate lastUpdate) {
+	private Set<Issue> issuesList = new HashSet<>();
+
+	public Repository() {
+	}
+
+	public Repository(String id, String name, String description, Integer stars, Integer forks, Integer openIssues,
+			LocalDate creation, LocalDate lastUpdate) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -48,10 +50,6 @@ public class Repository {
 		this.openIssues = openIssues;
 		this.creation = creation;
 		this.lastUpdate = lastUpdate;
-	}
-	
-	public Repository() {
-		
 	}
 
 	public String getId() {
@@ -117,4 +115,21 @@ public class Repository {
 	public void setLastUpdate(LocalDate lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public Set<Branch> getBranches() {
+		return branches;
+	}
+
+	public Set<Commit> getCommitsList() {
+		return commitsList;
+	}
+
+	public Set<Issue> getIssuesList() {
+		return issuesList;
+	}
+
 }

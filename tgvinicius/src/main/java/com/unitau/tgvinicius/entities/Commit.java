@@ -28,16 +28,15 @@ public class Commit {
 	@JoinColumn(name = "repository_id")
 	private Repository repository;
 
+	public Commit() {
+	}
+
 	public Commit(String id, String authorName, LocalDate creation, User user, Repository repository) {
 		this.id = id;
 		this.authorName = authorName;
 		this.creation = creation;
 		this.user = user;
 		this.repository = repository;
-	}
-
-	public Commit() {
-
 	}
 
 	public String getId() {
@@ -70,6 +69,14 @@ public class Commit {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
 	}
 
 }

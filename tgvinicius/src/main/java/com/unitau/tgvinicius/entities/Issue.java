@@ -1,7 +1,6 @@
 package com.unitau.tgvinicius.entities;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 import com.unitau.tgvinicius.enums.IssueState;
 
@@ -32,6 +31,9 @@ public class Issue {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	public Issue() {
+	}
+
 	public Issue(String id, String name, IssueState state, LocalDate creation, Repository repository, User user) {
 		this.id = id;
 		this.name = name;
@@ -39,10 +41,6 @@ public class Issue {
 		this.creation = creation;
 		this.repository = repository;
 		this.user = user;
-	}
-
-	public Issue() {
-
 	}
 
 	public String getId() {
@@ -84,4 +82,13 @@ public class Issue {
 	public void setRepository(Repository repository) {
 		this.repository = repository;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 }

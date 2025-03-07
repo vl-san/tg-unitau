@@ -31,14 +31,13 @@ public class User {
 	@JsonManagedReference
 	private Set<Commit> commitsList = new HashSet<>();
 
+	public User() {
+	}
+
 	public User(String id, String login, String name) {
 		this.id = id;
 		this.login = login;
 		this.name = name;
-	}
-
-	public User() {
-
 	}
 
 	public String getId() {
@@ -69,16 +68,7 @@ public class User {
 		return repository;
 	}
 
-	public void setrepository(Set<Repository> repositories) {
-		this.repository = repositories;
-	}
-
 	public Set<Commit> getCommitsList() {
 		return commitsList;
 	}
-
-	public void setCommitsList(Set<Commit> commitsList) {
-		this.commitsList = commitsList;
-	}
-
 }

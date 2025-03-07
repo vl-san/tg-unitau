@@ -21,15 +21,14 @@ public class Branch {
 	@JoinColumn(name = "commit_id")
 	private Commit lastCommit;
 
+	public Branch() {
+	}
+
 	public Branch(String id, String name, Repository repository, Commit lastCommit) {
 		this.id = id;
 		this.name = name;
 		this.repository = repository;
 		this.lastCommit = lastCommit;
-	}
-
-	public Branch() {
-
 	}
 
 	public String getId() {
@@ -63,7 +62,5 @@ public class Branch {
 	public void setLastCommit(Commit lastCommit) {
 		this.lastCommit = lastCommit;
 	}
-
-
 
 }
