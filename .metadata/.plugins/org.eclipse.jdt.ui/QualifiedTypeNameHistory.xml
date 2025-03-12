@@ -10,8 +10,10 @@
     <fullyQualifiedTypeName name="java.util.Arrays"/>
     <fullyQualifiedTypeName name="org.springframework.http.ResponseEntity"/>
     <fullyQualifiedTypeName name="com.unitau.tgvinicius.entities.User"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
-    <fullyQualifiedTypeName name="com.unitau.tgvinicius.entities.Repository"/>
     <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="org.springframework.web.service.invoker.HttpServiceProxyFactory"/>
+    <fullyQualifiedTypeName name="com.unitau.tgvinicius.client.GithubClient"/>
+    <fullyQualifiedTypeName name="com.unitau.tgvinicius.entities.Repository"/>
 </qualifiedTypeNameHistroy>

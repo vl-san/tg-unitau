@@ -1,93 +1,19 @@
 package com.unitau.tgvinicius.dto;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
-public class RepositoryDTO {
-	private String id;
-	private String name;
-	private String description;
-	private Integer stars;
-	private Integer forks;
-	private Integer openIssues;
-	private LocalDate creation;
-	private LocalDate lastUpdate;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	public RepositoryDTO() {
-	}
-
-	public RepositoryDTO(String id, String name, String description, Integer stars, Integer forks, Integer openIssues,
-			LocalDate creation, LocalDate lastUpdate) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.stars = stars;
-		this.forks = forks;
-		this.openIssues = openIssues;
-		this.creation = creation;
-		this.lastUpdate = lastUpdate;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Integer getStars() {
-		return stars;
-	}
-
-	public void setStars(Integer stars) {
-		this.stars = stars;
-	}
-
-	public Integer getForks() {
-		return forks;
-	}
-
-	public void setForks(Integer forks) {
-		this.forks = forks;
-	}
-
-	public Integer getOpenIssues() {
-		return openIssues;
-	}
-
-	public void setOpenIssues(Integer openIssues) {
-		this.openIssues = openIssues;
-	}
-
-	public LocalDate getCreation() {
-		return creation;
-	}
-
-	public void setCreation(LocalDate creation) {
-		this.creation = creation;
-	}
-
-	public LocalDate getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(LocalDate lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
+public record RepositoryDTO
+		(String id,
+		String name,
+		@JsonProperty("html_url") String htmlUrl,
+		@JsonProperty("created_at") Instant created,
+		@JsonProperty("updated_at") Instant updated,
+		Long size,
+		@JsonProperty("stargazers_count") Integer stargazers,
+		@JsonProperty("watchers_count") Integer watchers,
+		String language,
+		@JsonProperty("forks_count") Integer forks,
+		@JsonProperty("open_issues_count") Integer openIssues){
 }

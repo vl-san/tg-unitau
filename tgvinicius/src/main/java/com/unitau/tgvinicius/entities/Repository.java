@@ -1,6 +1,6 @@
 package com.unitau.tgvinicius.entities;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,12 +18,15 @@ public class Repository {
 	@Id
 	private String id;
 	private String name;
-	private String description;
-	private Integer stars;
+	private String htmlUrl;
+	private Instant created;
+	private Instant updated;
+	private Long size;
+	private Integer stargazers;
+	private Integer watchers;
+	private String language;
 	private Integer forks;
 	private Integer openIssues;
-	private LocalDate creation;
-	private LocalDate lastUpdate;
 
 	@ManyToMany(mappedBy = "repository")
 	private Set<User> users = new HashSet<>();
@@ -32,24 +35,28 @@ public class Repository {
 	private Set<Branch> branches = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Commit> commitsList = new HashSet<>();
+	private Set<Commit> commits = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Issue> issuesList = new HashSet<>();
+	private Set<Issue> issues = new HashSet<>();
 
 	public Repository() {
 	}
 
-	public Repository(String id, String name, String description, Integer stars, Integer forks, Integer openIssues,
-			LocalDate creation, LocalDate lastUpdate) {
+	public Repository(String id, String name, String htmlUrl, Instant created, Instant updated, Long size,
+			Integer stargazers, Integer watchers, String language, Integer forks, Integer openIssues,
+			Integer subscribers) {
 		this.id = id;
 		this.name = name;
-		this.description = description;
-		this.stars = stars;
+		this.htmlUrl = htmlUrl;
+		this.created = created;
+		this.updated = updated;
+		this.size = size;
+		this.stargazers = stargazers;
+		this.watchers = watchers;
+		this.language = language;
 		this.forks = forks;
 		this.openIssues = openIssues;
-		this.creation = creation;
-		this.lastUpdate = lastUpdate;
 	}
 
 	public String getId() {
@@ -68,20 +75,60 @@ public class Repository {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getHtmlUrl() {
+		return htmlUrl;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setHtmlUrl(String htmlUrl) {
+		this.htmlUrl = htmlUrl;
 	}
 
-	public Integer getStars() {
-		return stars;
+	public Instant getCreated() {
+		return created;
 	}
 
-	public void setStars(Integer stars) {
-		this.stars = stars;
+	public void setCreated(Instant created) {
+		this.created = created;
+	}
+
+	public Instant getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Instant updated) {
+		this.updated = updated;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public Integer getStargazers() {
+		return stargazers;
+	}
+
+	public void setStargazers(Integer stargazers) {
+		this.stargazers = stargazers;
+	}
+
+	public Integer getWatchers() {
+		return watchers;
+	}
+
+	public void setWatchers(Integer watchers) {
+		this.watchers = watchers;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public Integer getForks() {
@@ -100,22 +147,6 @@ public class Repository {
 		this.openIssues = openIssues;
 	}
 
-	public LocalDate getCreation() {
-		return creation;
-	}
-
-	public void setCreation(LocalDate creation) {
-		this.creation = creation;
-	}
-
-	public LocalDate getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(LocalDate lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
 	public Set<User> getUsers() {
 		return users;
 	}
@@ -124,12 +155,12 @@ public class Repository {
 		return branches;
 	}
 
-	public Set<Commit> getCommitsList() {
-		return commitsList;
+	public Set<Commit> getCommits() {
+		return commits;
 	}
 
-	public Set<Issue> getIssuesList() {
-		return issuesList;
+	public Set<Issue> getIssues() {
+		return issues;
 	}
 
 }

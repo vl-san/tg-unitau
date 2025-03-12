@@ -41,11 +41,18 @@ public class RepositoryService {
 	private void updateData(Repository entity, Repository obj) {
 		// entity.setId(obj.getId());
 		entity.setName(obj.getName());
-		entity.setDescription(obj.getDescription());
-		entity.setStars(obj.getStars());
+		entity.setHtmlUrl(obj.getHtmlUrl());
+		entity.setCreated(obj.getCreated());
+		entity.setUpdated(obj.getUpdated());
+		entity.setSize(obj.getSize());
+		entity.setStargazers(obj.getStargazers());
+		entity.setWatchers(obj.getWatchers());
+		entity.setLanguage(obj.getLanguage());
 		entity.setForks(obj.getForks());
 		entity.setOpenIssues(obj.getOpenIssues());
-		entity.setCreation(obj.getCreation());
-		entity.setLastUpdate(obj.getLastUpdate());
 	}
+	
+	public List<Repository> saveAll(List<Repository> repos) {
+        return repositoryRepository.saveAll(repos);
+    }
 }

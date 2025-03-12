@@ -1,8 +1,0 @@
-package com.unitau.tgvinicius.services;
-
-import org.springframework.stereotype.Service;
-
-@Service
-public class BranchService {
-
-}
