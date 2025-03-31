@@ -43,4 +43,8 @@ public class CommitService {
 		entity.setAuthorName(obj.getAuthorName());
 		entity.setCreation(obj.getCreation());
 	}
+	
+	public List<Commit> saveAll(List<Commit> commits) {
+        return commitRepository.saveAll(commits);
+    }
 }

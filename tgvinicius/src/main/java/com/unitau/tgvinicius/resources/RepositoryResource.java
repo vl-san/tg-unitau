@@ -27,6 +27,8 @@ import com.unitau.tgvinicius.util.RepositoryConverter;
 @RequestMapping(value = "/repositories")
 public class RepositoryResource {
 
+	private static final String Token = "token";
+
 	String username = "prefeiturasp";
 
 	@Autowired
@@ -73,20 +75,13 @@ public class RepositoryResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-//	@GetMapping("/repos")
-//	public ResponseEntity<List<RepositoryDTO>> listRepos(@RequestHeader("token") String token) {
-//		var repos = githubClient.listRepos("Bearer " + token, null, username);
-//		return ResponseEntity.ok(repos);
-//	}
-	
-	@GetMapping("/repos")
-	public ResponseEntity<List<RepositoryDTO>> listRepos(@RequestHeader("token") String token) {
+	@GetMapping("/repositories")
+	public ResponseEntity<List<RepositoryDTO>> listRepos(@RequestHeader(Token) String token) {
 	    List<RepositoryDTO> reposDtos = githubClient.listRepos("Bearer " + token, null, username);
 	    List<Repository> repos = reposDtos.stream()
 	                                      .map(RepositoryConverter::dtoToEntity)
 	                                      .collect(Collectors.toList());
-	    repositoryService.saveAll(repos); // Salvar os dados no banco
+	    repositoryService.saveAll(repos);
 	    return ResponseEntity.ok(reposDtos);
 	}
-
 }

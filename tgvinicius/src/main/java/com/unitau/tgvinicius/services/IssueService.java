@@ -40,8 +40,11 @@ public class IssueService {
 
 	private void updateData(Issue entity, Issue obj) {
 		// entity.setId(obj.getId());
-		entity.setName(obj.getName());
+		entity.setTitle(obj.getTitle());
 		entity.setState(obj.getState());
-		entity.setCreation(obj.getCreation());
 	}
+	
+	public List<Issue> saveAll(List<Issue> issues) {
+        return issueRepository.saveAll(issues);
+    }
 }

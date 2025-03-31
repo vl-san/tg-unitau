@@ -41,4 +41,8 @@ public class BranchService {
 		// entity.setId(obj.getId());
 		entity.setName(obj.getName());
 	}
+	
+	public List<Branch> saveAll(List<Branch> branches) {
+        return branchRepository.saveAll(branches);
+    }
 }

@@ -16,7 +16,6 @@ public class RepositoryConverter {
 		entity.setSize(dto.size());
 		entity.setStargazers(dto.stargazers());
 		entity.setWatchers(dto.watchers());
-		entity.setLanguage(dto.language());
 		entity.setForks(dto.forks());
 		entity.setOpenIssues(dto.openIssues());
 		

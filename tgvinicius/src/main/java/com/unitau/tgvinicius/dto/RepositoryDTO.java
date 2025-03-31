@@ -2,18 +2,19 @@ package com.unitau.tgvinicius.dto;
 
 import java.time.Instant;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.unitau.tgvinicius.util.RepositoryDTODeserializer;
 
+@JsonDeserialize(using = RepositoryDTODeserializer.class)
 public record RepositoryDTO
 		(String id,
 		String name,
-		@JsonProperty("html_url") String htmlUrl,
-		@JsonProperty("created_at") Instant created,
-		@JsonProperty("updated_at") Instant updated,
+		String htmlUrl,
+		Instant created,
+		Instant updated,
 		Long size,
-		@JsonProperty("stargazers_count") Integer stargazers,
-		@JsonProperty("watchers_count") Integer watchers,
-		String language,
-		@JsonProperty("forks_count") Integer forks,
-		@JsonProperty("open_issues_count") Integer openIssues){
+		Integer stargazers,
+		Integer watchers,
+		Integer forks,
+		Integer openIssues){
 }

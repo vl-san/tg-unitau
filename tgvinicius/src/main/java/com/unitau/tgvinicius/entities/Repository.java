@@ -24,12 +24,11 @@ public class Repository {
 	private Long size;
 	private Integer stargazers;
 	private Integer watchers;
-	private String language;
 	private Integer forks;
 	private Integer openIssues;
 
 	@ManyToMany(mappedBy = "repository")
-	private Set<User> users = new HashSet<>();
+	private Set<Contributor> users = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Branch> branches = new HashSet<>();
@@ -44,8 +43,7 @@ public class Repository {
 	}
 
 	public Repository(String id, String name, String htmlUrl, Instant created, Instant updated, Long size,
-			Integer stargazers, Integer watchers, String language, Integer forks, Integer openIssues,
-			Integer subscribers) {
+			Integer stargazers, Integer watchers, Integer forks, Integer openIssues, Integer subscribers) {
 		this.id = id;
 		this.name = name;
 		this.htmlUrl = htmlUrl;
@@ -54,7 +52,6 @@ public class Repository {
 		this.size = size;
 		this.stargazers = stargazers;
 		this.watchers = watchers;
-		this.language = language;
 		this.forks = forks;
 		this.openIssues = openIssues;
 	}
@@ -123,14 +120,6 @@ public class Repository {
 		this.watchers = watchers;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
 	public Integer getForks() {
 		return forks;
 	}
@@ -147,7 +136,7 @@ public class Repository {
 		this.openIssues = openIssues;
 	}
 
-	public Set<User> getUsers() {
+	public Set<Contributor> getUsers() {
 		return users;
 	}
 
@@ -162,5 +151,4 @@ public class Repository {
 	public Set<Issue> getIssues() {
 		return issues;
 	}
-
 }

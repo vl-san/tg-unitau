@@ -1,31 +1,11 @@
 package com.unitau.tgvinicius.dto;
 
-public class BranchDTO {
-	private String id;
-	private String name;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.unitau.tgvinicius.util.BranchDTODeserializer;
 
-	public BranchDTO() {
-	}
-
-	public BranchDTO(String id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+@JsonDeserialize(using = BranchDTODeserializer.class)
+public record BranchDTO(
+        String shaCommit,
+        String name
+) {
 }

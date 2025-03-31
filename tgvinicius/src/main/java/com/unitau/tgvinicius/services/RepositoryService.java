@@ -47,7 +47,6 @@ public class RepositoryService {
 		entity.setSize(obj.getSize());
 		entity.setStargazers(obj.getStargazers());
 		entity.setWatchers(obj.getWatchers());
-		entity.setLanguage(obj.getLanguage());
 		entity.setForks(obj.getForks());
 		entity.setOpenIssues(obj.getOpenIssues());
 	}

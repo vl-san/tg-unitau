@@ -1,8 +1,10 @@
 package com.unitau.tgvinicius.entities;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.unitau.tgvinicius.util.CommitDTODeserializer;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,19 +12,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+@JsonDeserialize(using = CommitDTODeserializer.class)
 @Entity
 @Table(name = "tb_commit")
 public class Commit {
 
 	@Id
-	private String id;
+	private String sha;
 	private String authorName;
-	private LocalDate creation;
+	private Instant creation;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonBackReference
-	private User user;
+	private Contributor user;
 
 	@ManyToOne
 	@JoinColumn(name = "repository_id")
@@ -31,20 +34,20 @@ public class Commit {
 	public Commit() {
 	}
 
-	public Commit(String id, String authorName, LocalDate creation, User user, Repository repository) {
-		this.id = id;
+	public Commit(String sha, String authorName, Instant creation, Contributor user, Repository repository) {
+		this.sha = sha;
 		this.authorName = authorName;
 		this.creation = creation;
 		this.user = user;
 		this.repository = repository;
 	}
 
-	public String getId() {
-		return id;
+	public String getSha() {
+		return sha;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setSha(String sha) {
+		this.sha = sha;
 	}
 
 	public String getAuthorName() {
@@ -55,19 +58,19 @@ public class Commit {
 		this.authorName = authorName;
 	}
 
-	public LocalDate getCreation() {
+	public Instant getCreation() {
 		return creation;
 	}
 
-	public void setCreation(LocalDate creation) {
+	public void setCreation(Instant creation) {
 		this.creation = creation;
 	}
 
-	public User getUser() {
+	public Contributor getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Contributor user) {
 		this.user = user;
 	}
 

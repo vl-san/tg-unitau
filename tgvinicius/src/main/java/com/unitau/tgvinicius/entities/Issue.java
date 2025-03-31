@@ -1,6 +1,6 @@
 package com.unitau.tgvinicius.entities;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import com.unitau.tgvinicius.enums.IssueState;
 
@@ -18,10 +18,11 @@ public class Issue {
 
 	@Id
 	private String id;
-	private String name;
+	private String title;
 	@Enumerated(EnumType.STRING)
 	private IssueState state;
-	private LocalDate creation;
+	private Instant createdAt;
+	private Instant updatedAt;
 
 	@ManyToOne
 	@JoinColumn(name = "repository_id")
@@ -29,16 +30,18 @@ public class Issue {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private Contributor user;
 
 	public Issue() {
 	}
 
-	public Issue(String id, String name, IssueState state, LocalDate creation, Repository repository, User user) {
+	public Issue(String id, String name, IssueState state, Instant createdAt, Instant updatedAt,
+			Repository repository, Contributor user) {
 		this.id = id;
-		this.name = name;
+		this.title = name;
 		this.state = state;
-		this.creation = creation;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.repository = repository;
 		this.user = user;
 	}
@@ -51,12 +54,12 @@ public class Issue {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public IssueState getState() {
@@ -67,12 +70,20 @@ public class Issue {
 		this.state = state;
 	}
 
-	public LocalDate getCreation() {
-		return creation;
+	public Instant getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreation(LocalDate creation) {
-		this.creation = creation;
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Instant getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Instant updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public Repository getRepository() {
@@ -83,11 +94,11 @@ public class Issue {
 		this.repository = repository;
 	}
 
-	public User getUser() {
+	public Contributor getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(Contributor user) {
 		this.user = user;
 	}
 

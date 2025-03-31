@@ -18,25 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.unitau.tgvinicius.client.GithubClient;
-import com.unitau.tgvinicius.dto.BranchDTO;
-import com.unitau.tgvinicius.entities.Branch;
-import com.unitau.tgvinicius.services.BranchService;
-import com.unitau.tgvinicius.util.BranchConverter;
+import com.unitau.tgvinicius.dto.ContributorDTO;
+import com.unitau.tgvinicius.entities.Contributor;
+import com.unitau.tgvinicius.services.ContributorService;
+import com.unitau.tgvinicius.util.ContributorConverter;
 
 @RestController
-@RequestMapping(value = "/branches")
-public class BranchResource {
-
+@RequestMapping(value = "/contributors")
+public class ContributorResource {
+	
 	private static final String Token = "token";
-
+	
 	String username = "prefeiturasp";
 	String repository = "SME-SIGPAE-API";
-
+	
 	@Autowired
-	private BranchService branchService;
+	private ContributorService contributorService;
 	@Autowired
 	private GithubClient githubClient;
-
+	
 	public String getUsername() {
 		return username;
 	}
@@ -54,45 +54,43 @@ public class BranchResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Branch>> findAll() {
-		List<Branch> list = branchService.findAll();
+	public ResponseEntity<List<Contributor>> findAll() {
+		List<Contributor> list = contributorService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Branch> FindById(@PathVariable String id) {
-		Branch obj = branchService.findById(id);
+	public ResponseEntity<Contributor> FindById(@PathVariable String id) {
+		Contributor obj = contributorService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Branch> insert(@RequestBody Branch obj) {
-		obj = branchService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getShaCommit())
-				.toUri();
+	public ResponseEntity<Contributor> insert(@RequestBody Contributor obj) {
+		obj = contributorService.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
-		branchService.delete(id);
+		contributorService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Branch> update(@PathVariable String id, @RequestBody Branch obj) {
-		obj = branchService.update(id, obj);
+	public ResponseEntity<Contributor> update(@PathVariable String id, @RequestBody Contributor obj) {
+		obj = contributorService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
-
-	@GetMapping("/branches")
-	public ResponseEntity<List<BranchDTO>> listBranches(@RequestHeader(Token) String token) {
-		List<BranchDTO> branchDtos = githubClient.listBranches("Bearer " + token, null, username, repository);
-		List<Branch> branches = branchDtos.stream()
-				.map(BranchConverter::dtoToEntity)
+	
+	@GetMapping("/contributors")
+	public ResponseEntity<List<ContributorDTO>> listContributor(@RequestHeader(Token) String token) {
+		List<ContributorDTO> contributorDtos = githubClient.listContributors("Bearer " + token, null, username, repository);
+		List<Contributor> contributor = contributorDtos.stream()
+				.map(ContributorConverter::dtoToEntity)
 				.collect(Collectors.toList());
-		branchService.saveAll(branches);
-		return ResponseEntity.ok(branchDtos);
+		contributorService.saveAll(contributor);
+		return ResponseEntity.ok(contributorDtos);
 	}
-
 }
