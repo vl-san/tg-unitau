@@ -1,17 +1,18 @@
-package com.unitau.tgvinicius.util;
+package com.unitau.tgvinicius.serialization;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.unitau.tgvinicius.dto.RepositoryDTO;
+import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
 
-public class RepositoryDTODeserializer extends JsonDeserializer<RepositoryDTO> {
+public class RepositoryDtoDeserializer extends JsonDeserializer<RepositoryRequestDto> {
 	@Override
-	public RepositoryDTO deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+	public RepositoryRequestDto deserialize(JsonParser parser, DeserializationContext context) throws IOException {
 		// Lê o JSON como uma árvore de nós
 		JsonNode rootNode = parser.getCodec().readTree(parser);
 
@@ -28,6 +29,16 @@ public class RepositoryDTODeserializer extends JsonDeserializer<RepositoryDTO> {
 		Integer openIssues = Integer.parseInt(rootNode.get("open_issues_count").asText());
 
 		// Retorna um novo BranchDTO com os valores extraídos
-		return new RepositoryDTO(id, name, htmlUrl, created, updated, size, stargazers, watchers, forks, openIssues);
+		return new RepositoryRequestDto(id,
+				name,
+				htmlUrl,
+				created, 
+				updated,
+				size, 
+				stargazers,
+				watchers, 
+				forks,
+				openIssues, 
+				List.of(), List.of(), List.of());
 	}
 }

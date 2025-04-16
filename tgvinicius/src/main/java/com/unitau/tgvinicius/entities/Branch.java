@@ -1,37 +1,29 @@
 package com.unitau.tgvinicius.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_branch")
 public class Branch {
 	@Id
-	private String shaCommit;
 	private String name;
 
-	@OneToOne
-	@JoinColumn(name = "commit_id")
-	private Commit lastCommit;
+	@ManyToOne
+	@JoinColumn(name = "commit_sha")
+	private Commit commit;
 
 	public Branch() {
 	}
 
-	public Branch(String id, String name, Repository repository, Commit lastCommit) {
-		this.shaCommit = id;
+	public Branch(String name, Commit commit) {
 		this.name = name;
-		this.lastCommit = lastCommit;
-	}
-
-	public String getShaCommit() {
-		return shaCommit;
-	}
-
-	public void setShaCommit(String shaCommit) {
-		this.shaCommit = shaCommit;
+		this.commit = commit;
 	}
 
 	public String getName() {
@@ -42,12 +34,29 @@ public class Branch {
 		this.name = name;
 	}
 
-	public Commit getLastCommit() {
-		return lastCommit;
+	public Commit getCommit() {
+		return commit;
 	}
 
-	public void setLastCommit(Commit lastCommit) {
-		this.lastCommit = lastCommit;
+	public void setCommit(Commit commit) {
+		this.commit = commit;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Branch other = (Branch) obj;
+		return Objects.equals(name, other.name);
 	}
 
 }

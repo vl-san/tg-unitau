@@ -4,51 +4,57 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.service.annotation.GetExchange;
 
-import com.unitau.tgvinicius.dto.BranchDTO;
-import com.unitau.tgvinicius.dto.CommitDTO;
-import com.unitau.tgvinicius.dto.ContributorDTO;
-import com.unitau.tgvinicius.dto.IssueDTO;
-import com.unitau.tgvinicius.dto.RepositoryDTO;
+import com.unitau.tgvinicius.dto.request.BranchRequestDto;
+import com.unitau.tgvinicius.dto.request.CommitRequestDto;
+import com.unitau.tgvinicius.dto.request.ContributorRequestDto;
+import com.unitau.tgvinicius.dto.request.IssueRequestDto;
+import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
 
 public interface GithubClient {
-
-	@GetExchange("users/{username}/repos")
-	public List<RepositoryDTO> listRepos(
+	
+	@GetExchange("repos/{username}/{repository}")
+	public RepositoryRequestDto listRepository(
 			@RequestHeader("Authorization") String token,
-			@RequestHeader(value = "X-GitHub-Api-Version", defaultValue = "2022-11-28") String apiVersion,
-			@PathVariable("username") String username);
+			@PathVariable("username") String username,
+			@PathVariable("repository") String repository
+	);
 	
 	@GetExchange("repos/{username}/{repository}/branches")
-	public List<BranchDTO> listBranches(
+	public List<BranchRequestDto> listBranches(
 	        @RequestHeader("Authorization") String token,
-	        @RequestHeader(value = "X-GitHub-Api-Version", defaultValue = "2022-11-28") String apiVersion,
 	        @PathVariable("username") String username,
-	        @PathVariable("repository") String repository // Adicionar o repositório
+	        @PathVariable("repository") String repository,
+	        @RequestParam(value = "page", defaultValue = "1") int page,
+	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 	
 	@GetExchange("repos/{username}/{repository}/issues")
-	public List<IssueDTO> listIssues(
+	public List<IssueRequestDto> listIssues(
 	        @RequestHeader("Authorization") String token,
-	        @RequestHeader(value = "X-GitHub-Api-Version", defaultValue = "2022-11-28") String apiVersion,
 	        @PathVariable("username") String username,
-	        @PathVariable("repository") String repository // Adicionar o repositório
+	        @PathVariable("repository") String repository,
+	        @RequestParam(value = "page", defaultValue = "1") int page,
+	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 	
 	@GetExchange("repos/{username}/{repository}/contributors")
-	public List<ContributorDTO> listContributors(
+	public List<ContributorRequestDto> listContributors(
 	        @RequestHeader("Authorization") String token,
-	        @RequestHeader(value = "X-GitHub-Api-Version", defaultValue = "2022-11-28") String apiVersion,
 	        @PathVariable("username") String username,
-	        @PathVariable("repository") String repository // Adicionar o repositório
+	        @PathVariable("repository") String repository,
+	        @RequestParam(value = "page", defaultValue = "1") int page,
+	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 	
 	@GetExchange("repos/{username}/{repository}/commits")
-	public List<CommitDTO> listCommits(
+	public List<CommitRequestDto> listCommits(
 	        @RequestHeader("Authorization") String token,
-	        @RequestHeader(value = "X-GitHub-Api-Version", defaultValue = "2022-11-28") String apiVersion,
 	        @PathVariable("username") String username,
-	        @PathVariable("repository") String repository // Adicionar o repositório
+	        @PathVariable("repository") String repository,
+	        @RequestParam(value = "page", defaultValue = "1") int page,
+	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 }

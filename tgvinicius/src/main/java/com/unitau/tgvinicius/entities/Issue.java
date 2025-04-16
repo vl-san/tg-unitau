@@ -1,9 +1,11 @@
 package com.unitau.tgvinicius.entities;
 
 import java.time.Instant;
+import java.util.Objects;
 
 import com.unitau.tgvinicius.enums.IssueState;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,8 +22,10 @@ public class Issue {
 	private String id;
 	private String title;
 	@Enumerated(EnumType.STRING)
-	private IssueState state;
+	private IssueState state; // Enum: OPEN, CLOSED
+	@Column(name = "created_at")
 	private Instant createdAt;
+	@Column(name = "updated_at")
 	private Instant updatedAt;
 
 	@ManyToOne
@@ -29,21 +33,21 @@ public class Issue {
 	private Repository repository;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private Contributor user;
+	@JoinColumn(name = "contributor_id")
+	private Contributor contributor;
 
 	public Issue() {
 	}
 
-	public Issue(String id, String name, IssueState state, Instant createdAt, Instant updatedAt,
-			Repository repository, Contributor user) {
+	public Issue(String id, String title, IssueState state, Instant createdAt, Instant updatedAt, Repository repository,
+			Contributor contributor) {
 		this.id = id;
-		this.title = name;
+		this.title = title;
 		this.state = state;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.repository = repository;
-		this.user = user;
+		this.contributor = contributor;
 	}
 
 	public String getId() {
@@ -94,12 +98,29 @@ public class Issue {
 		this.repository = repository;
 	}
 
-	public Contributor getUser() {
-		return user;
+	public Contributor getContributor() {
+		return contributor;
 	}
 
-	public void setUser(Contributor user) {
-		this.user = user;
+	public void setContributor(Contributor contributor) {
+		this.contributor = contributor;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Issue other = (Issue) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

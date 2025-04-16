@@ -2,7 +2,6 @@ package com.unitau.tgvinicius.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,46 +11,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.unitau.tgvinicius.client.GithubClient;
-import com.unitau.tgvinicius.dto.BranchDTO;
 import com.unitau.tgvinicius.entities.Branch;
 import com.unitau.tgvinicius.services.BranchService;
-import com.unitau.tgvinicius.util.BranchConverter;
 
 @RestController
 @RequestMapping(value = "/branches")
 public class BranchResource {
-
-	private static final String Token = "token";
-
-	String username = "prefeiturasp";
-	String repository = "SME-SIGPAE-API";
-
 	@Autowired
 	private BranchService branchService;
-	@Autowired
-	private GithubClient githubClient;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getRepository() {
-		return repository;
-	}
-
-	public void setRepository(String repository) {
-		this.repository = repository;
-	}
 
 	@GetMapping
 	public ResponseEntity<List<Branch>> findAll() {
@@ -68,7 +39,7 @@ public class BranchResource {
 	@PostMapping
 	public ResponseEntity<Branch> insert(@RequestBody Branch obj) {
 		obj = branchService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getShaCommit())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getCommit())
 				.toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
@@ -84,15 +55,4 @@ public class BranchResource {
 		obj = branchService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
-
-	@GetMapping("/branches")
-	public ResponseEntity<List<BranchDTO>> listBranches(@RequestHeader(Token) String token) {
-		List<BranchDTO> branchDtos = githubClient.listBranches("Bearer " + token, null, username, repository);
-		List<Branch> branches = branchDtos.stream()
-				.map(BranchConverter::dtoToEntity)
-				.collect(Collectors.toList());
-		branchService.saveAll(branches);
-		return ResponseEntity.ok(branchDtos);
-	}
-
 }

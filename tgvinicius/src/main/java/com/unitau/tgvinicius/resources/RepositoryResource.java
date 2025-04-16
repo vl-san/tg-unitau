@@ -2,7 +2,6 @@ package com.unitau.tgvinicius.resources;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,56 +11,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.unitau.tgvinicius.client.GithubClient;
-import com.unitau.tgvinicius.dto.RepositoryDTO;
-import com.unitau.tgvinicius.entities.Repository;
+import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
+import com.unitau.tgvinicius.dto.response.RepositoryResponseDto;
 import com.unitau.tgvinicius.services.RepositoryService;
-import com.unitau.tgvinicius.util.RepositoryConverter;
 
 @RestController
 @RequestMapping(value = "/repositories")
 public class RepositoryResource {
 
-	private static final String Token = "token";
-
-	String username = "prefeiturasp";
-
 	@Autowired
 	private RepositoryService repositoryService;
-	@Autowired
-	private GithubClient githubClient;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	@GetMapping
-	public ResponseEntity<List<Repository>> findAll() {
-		List<Repository> list = repositoryService.findAll();
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<RepositoryResponseDto>> findAll() {
+	    List<RepositoryResponseDto> list = repositoryService.findAll();
+	    return ResponseEntity.ok().body(list);
 	}
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Repository> findById(@PathVariable String id) {
-		Repository obj = repositoryService.findById(id);
-		return ResponseEntity.ok().body(obj);
+	@GetMapping("/{id}")
+	public ResponseEntity<RepositoryResponseDto> findById(@PathVariable String id) {
+	    RepositoryResponseDto response = repositoryService.findById(id);
+	    return ResponseEntity.ok().body(response);
 	}
+
 
 	@PostMapping
-	public ResponseEntity<Repository> insert(@RequestBody Repository obj) {
-		obj = repositoryService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<RepositoryResponseDto> insert(@RequestBody RepositoryRequestDto dto) {
+	    RepositoryResponseDto response = repositoryService.insert(dto);
+	    URI uri = ServletUriComponentsBuilder
+	        .fromCurrentRequest()
+	        .path("/{id}")
+	        .buildAndExpand(response.id())
+	        .toUri();
+	    return ResponseEntity.created(uri).body(response);
 	}
+
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {
@@ -70,18 +58,9 @@ public class RepositoryResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Repository> update(@PathVariable String id, @RequestBody Repository obj) {
-		obj = repositoryService.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<RepositoryResponseDto> update(@PathVariable String id, @RequestBody RepositoryRequestDto dto) {
+	    RepositoryResponseDto updatedRepository = repositoryService.update(id, dto);
+	    return ResponseEntity.ok().body(updatedRepository);
 	}
 
-	@GetMapping("/repositories")
-	public ResponseEntity<List<RepositoryDTO>> listRepos(@RequestHeader(Token) String token) {
-	    List<RepositoryDTO> reposDtos = githubClient.listRepos("Bearer " + token, null, username);
-	    List<Repository> repos = reposDtos.stream()
-	                                      .map(RepositoryConverter::dtoToEntity)
-	                                      .collect(Collectors.toList());
-	    repositoryService.saveAll(repos);
-	    return ResponseEntity.ok(reposDtos);
-	}
 }

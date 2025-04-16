@@ -2,12 +2,12 @@ package com.unitau.tgvinicius.entities;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -18,37 +18,38 @@ public class Repository {
 	@Id
 	private String id;
 	private String name;
+	@Column(name = "html_url")
 	private String htmlUrl;
-	private Instant created;
-	private Instant updated;
+	@Column(name = "created_at")
+	private Instant createdAt;
+	@Column(name = "updated_at")
+	private Instant updatedAt;
 	private Long size;
 	private Integer stargazers;
 	private Integer watchers;
 	private Integer forks;
+	@Column(name = "open_issues")
 	private Integer openIssues;
 
-	@ManyToMany(mappedBy = "repository")
-	private Set<Contributor> users = new HashSet<>();
+	@OneToMany(mappedBy = "repository")
+	private Set<Contributor> contributors = new HashSet<>();
 
-	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Branch> branches = new HashSet<>();
-
-	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "repository")
 	private Set<Commit> commits = new HashSet<>();
 
-	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "repository")
 	private Set<Issue> issues = new HashSet<>();
 
 	public Repository() {
 	}
 
-	public Repository(String id, String name, String htmlUrl, Instant created, Instant updated, Long size,
-			Integer stargazers, Integer watchers, Integer forks, Integer openIssues, Integer subscribers) {
+	public Repository(String id, String name, String htmlUrl, Instant createdAt, Instant updatedAt, Long size,
+			Integer stargazers, Integer watchers, Integer forks, Integer openIssues) {
 		this.id = id;
 		this.name = name;
 		this.htmlUrl = htmlUrl;
-		this.created = created;
-		this.updated = updated;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.size = size;
 		this.stargazers = stargazers;
 		this.watchers = watchers;
@@ -80,20 +81,20 @@ public class Repository {
 		this.htmlUrl = htmlUrl;
 	}
 
-	public Instant getCreated() {
-		return created;
+	public Instant getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated(Instant created) {
-		this.created = created;
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Instant getUpdated() {
-		return updated;
+	public Instant getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdated(Instant updated) {
-		this.updated = updated;
+	public void setUpdatedAt(Instant updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public Long getSize() {
@@ -136,14 +137,6 @@ public class Repository {
 		this.openIssues = openIssues;
 	}
 
-	public Set<Contributor> getUsers() {
-		return users;
-	}
-
-	public Set<Branch> getBranches() {
-		return branches;
-	}
-
 	public Set<Commit> getCommits() {
 		return commits;
 	}
@@ -151,4 +144,56 @@ public class Repository {
 	public Set<Issue> getIssues() {
 		return issues;
 	}
+
+	public Set<Contributor> getContributors() {
+		return contributors;
+	}
+	
+	public void addCommit(Commit commit) {
+		commits.add(commit);
+		commit.setRepository(this);
+	}
+
+	public void removeCommit(Commit commit) {
+		commits.remove(commit);
+		commit.setRepository(null);
+	}
+	
+	public void addIssue(Issue issue) {
+		issues.add(issue);
+		issue.setRepository(this);
+	}
+
+	public void removeBranch(Issue issue) {
+		issues.remove(issue);
+		issue.setRepository(null);
+	}
+	
+	public void addContributor(Contributor contributor) {
+		contributors.add(contributor);
+		contributor.setRepository(this);
+	}
+
+	public void removeContributor(Contributor contributor) {
+		contributors.remove(contributor);
+		contributor.setRepository(null);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Repository other = (Repository) obj;
+		return Objects.equals(id, other.id);
+	}
+
 }

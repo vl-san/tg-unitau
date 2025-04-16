@@ -1,13 +1,21 @@
 package com.unitau.tgvinicius.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.unitau.tgvinicius.converter.RepositoryConverter;
+import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
+import com.unitau.tgvinicius.dto.response.RepositoryResponseDto;
 import com.unitau.tgvinicius.entities.Repository;
 import com.unitau.tgvinicius.repositories.RepositoryRepository;
+import com.unitau.tgvinicius.services.exceptions.DatabaseException;
+import com.unitau.tgvinicius.services.exceptions.ResourceNotFoundException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class RepositoryService {
@@ -15,43 +23,72 @@ public class RepositoryService {
 	@Autowired
 	private RepositoryRepository repositoryRepository;
 
-	public List<Repository> findAll() {
-		return repositoryRepository.findAll();
+	public List<RepositoryResponseDto> findAll() {
+	    List<Repository> entities = repositoryRepository.findAll();
+	    return entities.stream()
+	        .map(RepositoryConverter::fromEntity)
+	        .toList();
 	}
 
-	public Repository findById(String id) {
-		Optional<Repository> obj = repositoryRepository.findById(id);
-		return obj.get();
+	public RepositoryResponseDto  findById(String id) {
+		Repository repository = repositoryRepository.findById(id)
+		        .orElseThrow(() -> new ResourceNotFoundException(id));
+		return RepositoryConverter.fromEntity(repository);
 	}
 
-	public Repository insert(Repository obj) {
-		return repositoryRepository.save(obj);
+	@Transactional
+	public RepositoryResponseDto  insert(RepositoryRequestDto  dto) {
+		try {
+			Repository entity = RepositoryConverter.dtoToEntity(dto);
+		    Repository saved = repositoryRepository.save(entity);
+		    return RepositoryConverter.fromEntity(saved);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 
+	@Transactional
 	public void delete(String id) {
-		repositoryRepository.deleteById(id);
+		try {
+			repositoryRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 
-	public Repository update(String id, Repository obj) {
-		Repository entity = repositoryRepository.getReferenceById(id);
-		updateData(entity, obj);
-		return repositoryRepository.save(entity);
+	@Transactional
+	public RepositoryResponseDto update(String id, RepositoryRequestDto dto) {
+		Repository entity = repositoryRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException(id));
+		updateData(entity, dto);
+		Repository updatedEntity = repositoryRepository.save(entity);
+		return RepositoryConverter.fromEntity(updatedEntity);
 	}
 
-	private void updateData(Repository entity, Repository obj) {
+	private void updateData(Repository entity, RepositoryRequestDto dto) {
 		// entity.setId(obj.getId());
-		entity.setName(obj.getName());
-		entity.setHtmlUrl(obj.getHtmlUrl());
-		entity.setCreated(obj.getCreated());
-		entity.setUpdated(obj.getUpdated());
-		entity.setSize(obj.getSize());
-		entity.setStargazers(obj.getStargazers());
-		entity.setWatchers(obj.getWatchers());
-		entity.setForks(obj.getForks());
-		entity.setOpenIssues(obj.getOpenIssues());
+		entity.setName(dto.name());
+		entity.setHtmlUrl(dto.htmlUrl());
+		entity.setCreatedAt(dto.createdAt());
+		entity.setUpdatedAt(dto.updatedAt());
+		entity.setSize(dto.size());
+		entity.setStargazers(dto.stargazers());
+		entity.setWatchers(dto.watchers());
+		entity.setForks(dto.forks());
+		entity.setOpenIssues(dto.openIssues());
 	}
-	
-	public List<Repository> saveAll(List<Repository> repos) {
-        return repositoryRepository.saveAll(repos);
-    }
+
+	@Transactional
+	public List<RepositoryResponseDto> saveAll(List<RepositoryRequestDto> dtos) {
+		List<Repository> entities = dtos.stream()
+	            .map(RepositoryConverter::dtoToEntity)
+	            .toList();
+		List<Repository> savedRepositories = repositoryRepository.saveAll(entities);
+		return savedRepositories.stream()
+	            .map(RepositoryConverter::fromEntity)
+	            .toList();
+	}
+
 }

@@ -1,21 +1,18 @@
 package com.unitau.tgvinicius.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "tb_contributor")
 public class Contributor {
 
 	@Id
@@ -24,22 +21,25 @@ public class Contributor {
 	private Integer contributions;
 	private String url;
 
-	@ManyToMany
-	@JoinTable(name = "user_repository", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "repository_id"))
-	private Set<Repository> repository = new HashSet<>();
+	@OneToMany(mappedBy = "contributor")
+	private Set<Commit> commits = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonManagedReference
-	private Set<Commit> commitsList = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "repository_id")
+	private Repository repository;
+
+	@OneToMany(mappedBy = "contributor")
+	private Set<Issue> issues = new HashSet<>();
 
 	public Contributor() {
 	}
 
-	public Contributor(String id, String name, Integer constributions, String url) {
+	public Contributor(String id, String name, Integer contributions, String url, Repository repository) {
 		this.id = id;
 		this.name = name;
-		this.contributions = constributions;
+		this.contributions = contributions;
 		this.url = url;
+		this.repository = repository;
 	}
 
 	public String getId() {
@@ -74,12 +74,57 @@ public class Contributor {
 		this.url = url;
 	}
 
-	public Set<Repository> getRepository() {
+	public Repository getRepository() {
 		return repository;
 	}
 
-	public Set<Commit> getCommitsList() {
-		return commitsList;
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+
+	public Set<Commit> getCommits() {
+		return commits;
+	}
+
+	public Set<Issue> getIssues() {
+		return issues;
+	}
+	
+	public void addCommit(Commit commit) {
+		commits.add(commit);
+		commit.setContributor(this);
+	}
+
+	public void removeCommit(Commit commit) {
+		commits.remove(commit);
+		commit.setContributor(null);
+	}
+	
+	public void addIssue(Issue issue) {
+		issues.add(issue);
+		issue.setContributor(this);
+	}
+
+	public void removeBranch(Issue issue) {
+		issues.remove(issue);
+		issue.setContributor(null);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Contributor other = (Contributor) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }

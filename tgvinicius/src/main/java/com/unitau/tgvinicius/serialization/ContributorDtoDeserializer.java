@@ -1,16 +1,17 @@
-package com.unitau.tgvinicius.util;
+package com.unitau.tgvinicius.serialization;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.unitau.tgvinicius.dto.ContributorDTO;
+import com.unitau.tgvinicius.dto.request.ContributorRequestDto;
 
-public class ContributorDTODeserializer extends JsonDeserializer<ContributorDTO>  {
+public class ContributorDtoDeserializer extends JsonDeserializer<ContributorRequestDto>  {
 	@Override
-    public ContributorDTO deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+    public ContributorRequestDto deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         JsonNode rootNode = parser.getCodec().readTree(parser);
 
         String id = rootNode.get("id").asText();
@@ -18,6 +19,6 @@ public class ContributorDTODeserializer extends JsonDeserializer<ContributorDTO>
         int contributions = Integer.parseInt(rootNode.get("contributions").asText());
         String url = rootNode.get("html_url").asText();
 
-        return new ContributorDTO(id, name, contributions, url);
+        return new ContributorRequestDto(id, name, contributions, url, List.of(), List.of());
     }
 }

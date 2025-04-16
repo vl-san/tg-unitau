@@ -1,35 +1,28 @@
 package com.unitau.tgvinicius.resources;
 
+import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.unitau.tgvinicius.client.GithubClient;
-import com.unitau.tgvinicius.dto.IssueDTO;
 import com.unitau.tgvinicius.entities.Issue;
 import com.unitau.tgvinicius.services.IssueService;
-import com.unitau.tgvinicius.util.IssueConverter;
 
 @RestController
 @RequestMapping(value = "/issues")
 public class IssueResource {
-
-	private static final String Token = "token";
-
-	String username = "prefeiturasp";
-	String repository = "SME-SIGPAE-API";
-
 	@Autowired
 	private IssueService issueService;
-	@Autowired
-	private GithubClient githubClient;
 
 	@GetMapping
 	public ResponseEntity<List<Issue>> findAll() {
@@ -43,13 +36,22 @@ public class IssueResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@GetMapping("/issues")
-	public ResponseEntity<List<IssueDTO>> listIssue(@RequestHeader(Token) String token) {
-		List<IssueDTO> issueDtos = githubClient.listIssues("Bearer " + token, null, username, repository);
-		List<Issue> issue = issueDtos.stream()
-				.map(IssueConverter::dtoToEntity)
-				.collect(Collectors.toList());
-		issueService.saveAll(issue);
-		return ResponseEntity.ok(issueDtos);
+	@PostMapping
+	public ResponseEntity<Issue> insert(@RequestBody Issue obj) {
+		obj = issueService.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable String id) {
+		issueService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Issue> update(@PathVariable String id, @RequestBody Issue obj) {
+		obj = issueService.update(id, obj);
+		return ResponseEntity.ok().body(obj);
 	}
 }
