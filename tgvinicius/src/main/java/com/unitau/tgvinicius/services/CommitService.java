@@ -8,6 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.unitau.tgvinicius.converter.CommitConverter;
+import com.unitau.tgvinicius.dto.response.CommitResponseDto;
 import com.unitau.tgvinicius.entities.Commit;
 import com.unitau.tgvinicius.repositories.CommitRepository;
 import com.unitau.tgvinicius.services.exceptions.DatabaseException;
@@ -21,9 +23,12 @@ public class CommitService {
 	@Autowired
 	private CommitRepository commitRepository;
 
-	public List<Commit> findAll() {
-		return commitRepository.findAll();
-	}
+	 public List<CommitResponseDto> findAll() {
+	        List<Commit> commits = commitRepository.findAll();
+	        return commits.stream()
+	                      .map(CommitConverter::fromEntity)
+	                      .toList();
+	    }
 
 	public Commit findById(String id) {
 		Optional<Commit> obj = commitRepository.findById(id);
@@ -60,11 +65,15 @@ public class CommitService {
 	private void updateData(Commit entity, Commit obj) {
 		// entity.setSha(obj.getSha());
 		entity.setAuthorLogin(obj.getAuthorLogin());
-		entity.setCreationAt(obj.getCreationAt());
+		entity.setCreatedAt(obj.getCreatedAt());
 	}
 
 	@Transactional
 	public List<Commit> saveAll(List<Commit> commits) {
 		return commitRepository.saveAll(commits);
 	}
+	
+	public List<Commit> findByRepositoryId(String repositoryId) {
+        return commitRepository.findByRepositoryId(repositoryId);
+    }
 }

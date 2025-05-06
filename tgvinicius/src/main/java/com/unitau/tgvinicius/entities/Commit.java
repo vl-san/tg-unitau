@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.unitau.tgvinicius.serialization.CommitDtoDeserializer;
+import com.unitau.tgvinicius.deserializer.CommitDtoDeserializer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,12 +22,12 @@ import jakarta.persistence.Table;
 public class Commit {
 
 	@Id
-	@Column(unique = true, nullable = false, columnDefinition = "CHAR(40)")
+	@Column(unique = true, nullable = false)
 	private String sha;
 	@Column(name = "author_login")
 	private String authorLogin;
-	@Column(name = "creation_at")
-	private Instant creationAt;
+	@Column(name = "created_at")
+	private Instant createdAt;
 
 	@ManyToOne
 	@JoinColumn(name = "repository_id")
@@ -43,10 +43,10 @@ public class Commit {
 	public Commit() {
 	}
 
-	public Commit(String sha, String authorLogin, Instant creationAt, Repository repository, Contributor contributor) {
+	public Commit(String sha, String authorLogin, Instant createdAt, Repository repository, Contributor contributor) {
 		this.sha = sha;
 		this.authorLogin = authorLogin;
-		this.creationAt = creationAt;
+		this.createdAt = createdAt;
 		this.repository = repository;
 		this.contributor = contributor;
 	}
@@ -67,12 +67,12 @@ public class Commit {
 		this.authorLogin = authorLogin;
 	}
 
-	public Instant getCreationAt() {
-		return creationAt;
+	public Instant getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreationAt(Instant creationAt) {
-		this.creationAt = creationAt;
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public Repository getRepository() {

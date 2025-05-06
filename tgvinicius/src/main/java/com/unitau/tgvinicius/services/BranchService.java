@@ -1,13 +1,14 @@
 package com.unitau.tgvinicius.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.unitau.tgvinicius.converter.BranchConverter;
+import com.unitau.tgvinicius.dto.response.BranchResponseDto;
 import com.unitau.tgvinicius.entities.Branch;
 import com.unitau.tgvinicius.repositories.BranchRepository;
 import com.unitau.tgvinicius.services.exceptions.DatabaseException;
@@ -20,13 +21,17 @@ public class BranchService {
 	@Autowired
 	private BranchRepository branchRepository;
 
-	public List<Branch> findAll() {
-		return branchRepository.findAll();
+	public List<BranchResponseDto> findAll() {
+	    List<Branch> branches = branchRepository.findAll();
+	    return branches.stream()
+	                   .map(BranchConverter::fromEntity)
+	                   .toList();
 	}
 
-	public Branch findById(String id) {
-		Optional<Branch> obj = branchRepository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	public BranchResponseDto findById(String id) {
+	    Branch branch = branchRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException(id));
+	    return BranchConverter.fromEntity(branch);
 	}
 
 	@Transactional
@@ -64,4 +69,9 @@ public class BranchService {
 	public List<Branch> saveAll(List<Branch> branches) {
 		return branchRepository.saveAll(branches);
 	}
+	
+	public List<Branch> findByRepositoryId(String repositoryId) {
+	    return branchRepository.findByRepositoryId(repositoryId);
+	}
+
 }

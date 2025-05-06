@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -31,8 +32,12 @@ public class Repository {
 	@Column(name = "open_issues")
 	private Integer openIssues;
 
-	@OneToMany(mappedBy = "repository")
-	private Set<Contributor> contributors = new HashSet<>();
+	public void setRepositoryContributors(Set<RepositoryContributor> repositoryContributors) {
+		this.repositoryContributors = repositoryContributors;
+	}
+
+	@OneToMany(mappedBy = "repository", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<RepositoryContributor> repositoryContributors = new HashSet<>();
 
 	@OneToMany(mappedBy = "repository")
 	private Set<Commit> commits = new HashSet<>();
@@ -145,10 +150,10 @@ public class Repository {
 		return issues;
 	}
 
-	public Set<Contributor> getContributors() {
-		return contributors;
+	public Set<RepositoryContributor> getRepositoryContributors() {
+		return repositoryContributors;
 	}
-	
+
 	public void addCommit(Commit commit) {
 		commits.add(commit);
 		commit.setRepository(this);
@@ -158,7 +163,7 @@ public class Repository {
 		commits.remove(commit);
 		commit.setRepository(null);
 	}
-	
+
 	public void addIssue(Issue issue) {
 		issues.add(issue);
 		issue.setRepository(this);
@@ -168,15 +173,15 @@ public class Repository {
 		issues.remove(issue);
 		issue.setRepository(null);
 	}
-	
-	public void addContributor(Contributor contributor) {
-		contributors.add(contributor);
-		contributor.setRepository(this);
+
+	public void addRepositoryContributor(RepositoryContributor repositoryContributor) {
+		this.repositoryContributors.add(repositoryContributor);
+		repositoryContributor.setRepository(this); // Define o relacionamento bidirecional
 	}
 
-	public void removeContributor(Contributor contributor) {
-		contributors.remove(contributor);
-		contributor.setRepository(null);
+	public void removeRepositoryContributor(RepositoryContributor repositoryContributor) {
+		this.repositoryContributors.remove(repositoryContributor);
+		repositoryContributor.setRepository(null); // Remove o relacionamento bidirecional
 	}
 
 	@Override

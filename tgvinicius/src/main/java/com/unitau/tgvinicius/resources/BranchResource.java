@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.unitau.tgvinicius.dto.response.BranchResponseDto;
 import com.unitau.tgvinicius.entities.Branch;
 import com.unitau.tgvinicius.services.BranchService;
 
@@ -25,15 +26,15 @@ public class BranchResource {
 	private BranchService branchService;
 
 	@GetMapping
-	public ResponseEntity<List<Branch>> findAll() {
-		List<Branch> list = branchService.findAll();
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<BranchResponseDto>> findAll() {
+	    List<BranchResponseDto> list = branchService.findAll();
+	    return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Branch> FindById(@PathVariable String id) {
-		Branch obj = branchService.findById(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<BranchResponseDto> findById(@PathVariable String id) {
+	    BranchResponseDto obj = branchService.findById(id);
+	    return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping

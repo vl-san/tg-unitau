@@ -15,44 +15,45 @@ import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
 
 public interface GithubClient {
 	
-	@GetExchange("repos/{username}/{repository}")
+	@GetExchange("repos/{owner}/{repository}")
 	public RepositoryRequestDto listRepository(
 			@RequestHeader("Authorization") String token,
-			@PathVariable("username") String username,
+			@PathVariable("owner") String owner,
 			@PathVariable("repository") String repository
 	);
 	
-	@GetExchange("repos/{username}/{repository}/branches")
+	@GetExchange("repos/{owner}/{repository}/branches")
 	public List<BranchRequestDto> listBranches(
 	        @RequestHeader("Authorization") String token,
-	        @PathVariable("username") String username,
+	        @PathVariable("owner") String owner,
 	        @PathVariable("repository") String repository,
 	        @RequestParam(value = "page", defaultValue = "1") int page,
-	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
+	        @RequestParam(value = "per_page", defaultValue = "30") int perPage // número entre 30 e 100
 	);
 	
-	@GetExchange("repos/{username}/{repository}/issues")
+	@GetExchange("repos/{owner}/{repository}/issues")
 	public List<IssueRequestDto> listIssues(
 	        @RequestHeader("Authorization") String token,
-	        @PathVariable("username") String username,
+	        @PathVariable("owner") String owner,
 	        @PathVariable("repository") String repository,
+	        @RequestParam(value = "state", defaultValue = "all") String state, // "open", "closed", ou "all"
 	        @RequestParam(value = "page", defaultValue = "1") int page,
 	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 	
-	@GetExchange("repos/{username}/{repository}/contributors")
+	@GetExchange("repos/{owner}/{repository}/contributors")
 	public List<ContributorRequestDto> listContributors(
 	        @RequestHeader("Authorization") String token,
-	        @PathVariable("username") String username,
+	        @PathVariable("owner") String owner,
 	        @PathVariable("repository") String repository,
 	        @RequestParam(value = "page", defaultValue = "1") int page,
 	        @RequestParam(value = "per_page", defaultValue = "30") int perPage
 	);
 	
-	@GetExchange("repos/{username}/{repository}/commits")
+	@GetExchange("repos/{owner}/{repository}/commits")
 	public List<CommitRequestDto> listCommits(
 	        @RequestHeader("Authorization") String token,
-	        @PathVariable("username") String username,
+	        @PathVariable("owner") String owner,
 	        @PathVariable("repository") String repository,
 	        @RequestParam(value = "page", defaultValue = "1") int page,
 	        @RequestParam(value = "per_page", defaultValue = "30") int perPage

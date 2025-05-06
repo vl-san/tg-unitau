@@ -1,13 +1,14 @@
 package com.unitau.tgvinicius.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.unitau.tgvinicius.converter.IssueConverter;
+import com.unitau.tgvinicius.dto.response.IssueResponseDto;
 import com.unitau.tgvinicius.entities.Issue;
 import com.unitau.tgvinicius.repositories.IssueRepository;
 import com.unitau.tgvinicius.services.exceptions.DatabaseException;
@@ -21,13 +22,17 @@ public class IssueService {
 	@Autowired
 	private IssueRepository issueRepository;
 
-	public List<Issue> findAll() {
-		return issueRepository.findAll();
+	public List<IssueResponseDto> findAll() {
+	    List<Issue> issues = issueRepository.findAll();
+	    return issues.stream()
+	                 .map(IssueConverter::fromEntity)
+	                 .toList();
 	}
 
-	public Issue findById(String id) {
-		Optional<Issue> obj = issueRepository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	public IssueResponseDto findById(String id) {
+	    Issue issue = issueRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException(id));
+	    return IssueConverter.fromEntity(issue);
 	}
 
 	@Transactional
@@ -70,4 +75,8 @@ public class IssueService {
 	public List<Issue> saveAll(List<Issue> issues) {
 		return issueRepository.saveAll(issues);
 	}
+	
+	public List<Issue> findByRepositoryId(String repositoryId) {
+        return issueRepository.findByRepositoryId(repositoryId);
+    }
 }

@@ -1,7 +1,6 @@
 package com.unitau.tgvinicius.dto.response;
 
 import java.time.Instant;
-import java.util.List;
 
 public record RepositoryResponseDto
 		(String id,
@@ -13,8 +12,5 @@ public record RepositoryResponseDto
 		Integer stargazers,
 		Integer watchers,
 		Integer forks,
-		Integer openIssues,
-		List<ContributorResponseDto> contributors,
-		List<CommitResponseDto> commits, 
-		List<IssueResponseDto> issues) {
+		Integer openIssues) {
 }

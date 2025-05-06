@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Issues</title>
+    <meta charset="UTF-8">
+	<style>
+	    table {
+	        width: 100%;
+	        border-collapse: collapse;
+	        margin-top: 20px;
+	    }
+
+	    th, td {
+	        padding: 8px 12px;
+	        border: 1px solid #ddd;
+	        text-align: left;
+	    }
+
+	    th {
+	        background-color: #f5f5f5;
+	    }
+
+	    h1 {
+	        margin-bottom: 10px;
+	    }
+	</style>
+</head>
+<body>
+    <h1>Issues do Repositório</h1>
+
+    <a th:href="@{/view}">Voltar</a>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Status</th>
+                <th>Criada em</th>
+                <th>Atualizada em</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="issue : ${issues}">
+                <td th:text="${issue.id}">id</td>
+                <td th:text="${issue.title}">title</td>
+                <td th:text="${issue.state}">state</td>
+                <td th:text="${#dates.format(issue.createdAt, 'dd/MM/yyyy HH:mm')}">created</td>
+                <td th:text="${#dates.format(issue.updatedAt, 'dd/MM/yyyy HH:mm')}">updated</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

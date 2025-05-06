@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.unitau.tgvinicius.converter.CommitConverter;
+import com.unitau.tgvinicius.dto.request.CommitRequestDto;
+import com.unitau.tgvinicius.dto.response.CommitResponseDto;
 import com.unitau.tgvinicius.entities.Commit;
 import com.unitau.tgvinicius.services.CommitService;
 
@@ -24,24 +27,32 @@ public class CommitResource {
 	@Autowired
 	private CommitService commitService;
 
-	@GetMapping
-	public ResponseEntity<List<Commit>> findAll() {
-		List<Commit> list = commitService.findAll();
-		return ResponseEntity.ok().body(list);
-	}
+	 @GetMapping
+	    public ResponseEntity<List<CommitResponseDto>> findAll() {
+	        List<CommitResponseDto> list = commitService.findAll();
+	        return ResponseEntity.ok().body(list);
+	    }
 
-	@GetMapping(value = "/{id}")
-	public ResponseEntity<Commit> FindById(@PathVariable String id) {
-		Commit obj = commitService.findById(id);
-		return ResponseEntity.ok().body(obj);
-	}
+	 @GetMapping(value = "/{id}")
+	 public ResponseEntity<CommitResponseDto> findById(@PathVariable String id) {
+	     Commit obj = commitService.findById(id);
+	     CommitResponseDto dto = CommitConverter.fromEntity(obj);
+	     return ResponseEntity.ok().body(dto);
+	 }
 
-	@PostMapping
-	public ResponseEntity<Commit> insert(@RequestBody Commit obj) {
-		obj = commitService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getSha()).toUri();
-		return ResponseEntity.created(uri).body(obj);
-	}
+
+	 @PostMapping
+	 public ResponseEntity<CommitResponseDto> insert(@RequestBody CommitRequestDto dto) {
+	     Commit entity = CommitConverter.dtoToEntity(dto);
+	     Commit savedEntity = commitService.insert(entity);
+	     CommitResponseDto responseDto = CommitConverter.fromEntity(savedEntity);
+	     
+	     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+	             .path("/{id}")
+	             .buildAndExpand(savedEntity.getSha())
+	             .toUri();
+	     return ResponseEntity.created(uri).body(responseDto);
+	 }
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {

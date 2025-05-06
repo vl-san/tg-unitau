@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.unitau.tgvinicius.dto.response.IssueResponseDto;
 import com.unitau.tgvinicius.entities.Issue;
 import com.unitau.tgvinicius.services.IssueService;
 
@@ -25,15 +26,15 @@ public class IssueResource {
 	private IssueService issueService;
 
 	@GetMapping
-	public ResponseEntity<List<Issue>> findAll() {
-		List<Issue> list = issueService.findAll();
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<IssueResponseDto>> findAll() {
+	    List<IssueResponseDto> list = issueService.findAll();
+	    return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Issue> FindById(@PathVariable String id) {
-		Issue obj = issueService.findById(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<IssueResponseDto> findById(@PathVariable String id) {
+	    IssueResponseDto obj = issueService.findById(id);
+	    return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping

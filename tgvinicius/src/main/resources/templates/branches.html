@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Branches</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Branches</h1>
+	<a href="/view" style="text-decoration: none;">
+		    <button type="button">Voltar</button>
+	</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>SHA do Commit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="branch : ${branches}">
+                <td th:text="${branch.name}">nome</td>
+                <td th:text="${branch.commit != null ? branch.commit.sha : '—'}">sha</td>
+            </tr>
+        </tbody>
+    </table>
+	
+</body>
+</html>

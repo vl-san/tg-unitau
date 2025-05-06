@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .form-section, .menu-section {
+            flex: 1 1 400px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            font-size: 14px;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .menu-section a {
+            margin-top: 15px;
+            display: inline-block;
+            background-color: black;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .menu-section a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Captura e controle de métricas do GitHub</h1>
+<div class="container">
+    
+    <!-- Formulário de adição -->
+    <div class="form-section">
+        <h3>Adicionar novo repositório:</h3>
+        <form th:action="@{/view/import}" method="post">
+
+            <label for="owner">Owner:</label>
+            <input type="text" id="owner" name="owner" placeholder="Digite o nome de usuário do dono do repositório" required>
+
+            <label for="repository">Repositório:</label>
+            <input type="text" id="repository" name="repository" placeholder="Digite o nome do repositório" required>
+
+            <label for="token">Token:</label>
+            <input type="password" id="token" name="token" placeholder="Digite seu token do GitHub" required>
+
+            <button type="submit">Adicionar repositório</button>
+        </form>
+    </div>
+
+    <!-- Seletor de repositórios existentes -->
+    <div class="menu-section">
+        <h3>Visualizar dados já existentes:</h3>
+
+        <form th:action="@{/view/repository-data}" method="get">
+            <label for="repositoryId">Escolha um repositório:</label>
+			<select id="repositoryId" name="repositoryId" required>
+			    <option value="" disabled selected>Selecione um repositório</option>
+			    <option th:each="repo : ${repositories}"
+			            th:value="${repo.id}"
+			            th:text="${repo.name + ' (' + repo.id + ')'}">
+			    </option>
+			</select>
+			<label for="entity">Escolha qual tabela deseja visualizar:</label>
+			<select id="entity" name="entity" required>
+				<option value="" disabled selected>Selecione uma tabela</option>
+				<option value="branches">Branches</option>
+		        <option value="commits">Commits</option>
+		        <option value="contributors">Contribuidores</option>
+		        <option value="issues">Issues</option>
+				<option value="repository">Repositório</option>
+			</select>
+						
+			<button type="submit">Visualizar dados</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

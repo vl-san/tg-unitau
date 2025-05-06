@@ -1,4 +1,4 @@
-package com.unitau.tgvinicius.serialization;
+package com.unitau.tgvinicius.deserializer;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -13,10 +13,8 @@ import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
 public class RepositoryDtoDeserializer extends JsonDeserializer<RepositoryRequestDto> {
 	@Override
 	public RepositoryRequestDto deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-		// Lê o JSON como uma árvore de nós
 		JsonNode rootNode = parser.getCodec().readTree(parser);
 
-		// Obtém os valores dos campos relevantes
 		String id = rootNode.get("id").asText();
 		String name = rootNode.get("name").asText();
 		String htmlUrl = rootNode.get("html_url").asText();
@@ -28,7 +26,6 @@ public class RepositoryDtoDeserializer extends JsonDeserializer<RepositoryReques
 		Integer forks = Integer.parseInt(rootNode.get("forks_count").asText());
 		Integer openIssues = Integer.parseInt(rootNode.get("open_issues_count").asText());
 
-		// Retorna um novo BranchDTO com os valores extraídos
 		return new RepositoryRequestDto(id,
 				name,
 				htmlUrl,

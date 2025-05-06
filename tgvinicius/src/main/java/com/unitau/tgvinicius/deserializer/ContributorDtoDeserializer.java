@@ -1,4 +1,4 @@
-package com.unitau.tgvinicius.serialization;
+package com.unitau.tgvinicius.deserializer;
 
 import java.io.IOException;
 import java.util.List;

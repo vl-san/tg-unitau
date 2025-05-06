@@ -6,34 +6,30 @@ import com.unitau.tgvinicius.entities.Branch;
 import com.unitau.tgvinicius.entities.Commit;
 
 public class CommitConverter {
-	public static Commit dtoToEntity(CommitRequestDto dto) {
-		Commit entity = new Commit();
+    public static Commit dtoToEntity(CommitRequestDto dto) {
+        Commit entity = new Commit();
 
-		entity.setSha(dto.sha());
-		entity.setAuthorLogin(dto.authorLogin());
-		entity.setCreationAt(dto.creationAt());
+        entity.setSha(dto.sha());
+        entity.setAuthorLogin(dto.authorLogin());
+        entity.setCreatedAt(dto.creationAt());
 
-		if (dto.branches() != null) {
-			dto.branches().forEach(branchDTO -> {
-				Branch branch = new Branch();
-				branch.setName(branchDTO.name());
-				entity.addBranch(branch);
-				branch.setCommit(entity);
-			});
-		}
+        if (dto.branches() != null) {
+            dto.branches().forEach(branchDTO -> {
+                Branch branch = BranchConverter.dtoToEntity(branchDTO);
+                entity.addBranch(branch);
+                branch.setCommit(entity);
+            });
+        }
 
-		return entity;
-	}
-	
-	    public static CommitResponseDto fromEntity(Commit commit) {
-	        return new CommitResponseDto(
-	            commit.getSha(),
-	            commit.getAuthorLogin(),
-	            commit.getCreationAt(),
-	            commit.getBranches().stream()
-	            .map(BranchConverter::fromEntity)
-	            .toList()
+        return entity;
+    }
+
+    public static CommitResponseDto fromEntity(Commit commit) {
+        return new CommitResponseDto(
+            commit.getSha(),
+            commit.getAuthorLogin(),
+            commit.getCreatedAt()
         );
-	    }
-	}
+    }
+}
 

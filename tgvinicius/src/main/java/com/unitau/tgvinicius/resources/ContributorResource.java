@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.unitau.tgvinicius.dto.response.ContributorResponseDto;
 import com.unitau.tgvinicius.entities.Contributor;
 import com.unitau.tgvinicius.services.ContributorService;
 
@@ -25,15 +26,15 @@ public class ContributorResource {
 	private ContributorService contributorService;
 
 	@GetMapping
-	public ResponseEntity<List<Contributor>> findAll() {
-		List<Contributor> list = contributorService.findAll();
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<List<ContributorResponseDto>> findAll() {
+	    List<ContributorResponseDto> list = contributorService.findAll();
+	    return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Contributor> FindById(@PathVariable String id) {
-		Contributor obj = contributorService.findById(id);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<ContributorResponseDto> findById(@PathVariable String id) {
+	    ContributorResponseDto obj = contributorService.findById(id);
+	    return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping

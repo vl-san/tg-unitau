@@ -1,13 +1,14 @@
 package com.unitau.tgvinicius.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.unitau.tgvinicius.converter.ContributorConverter;
+import com.unitau.tgvinicius.dto.response.ContributorResponseDto;
 import com.unitau.tgvinicius.entities.Contributor;
 import com.unitau.tgvinicius.repositories.ContributorRepository;
 import com.unitau.tgvinicius.services.exceptions.DatabaseException;
@@ -21,13 +22,17 @@ public class ContributorService {
 	@Autowired
 	private ContributorRepository contributorRepository;
 
-	public List<Contributor> findAll() {
-		return contributorRepository.findAll();
+	public List<ContributorResponseDto> findAll() {
+	    List<Contributor> contributors = contributorRepository.findAll();
+	    return contributors.stream()
+	                       .map(ContributorConverter::fromEntity)
+	                       .toList();
 	}
-
-	public Contributor findById(String id) {
-		Optional<Contributor> obj = contributorRepository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	
+	public ContributorResponseDto findById(String id) {
+	    Contributor contributor = contributorRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException(id));
+	    return ContributorConverter.fromEntity(contributor);
 	}
 
 	@Transactional
@@ -59,9 +64,8 @@ public class ContributorService {
 	}
 
 	private void updateData(Contributor entity, Contributor obj) {
-		// entity.setId(obj.getId());
+//		entity.setId(obj.getId());
 		entity.setName(obj.getName());
-		entity.setContributions(obj.getContributions());
 		entity.setUrl(obj.getUrl());
 	}
 
@@ -69,4 +73,8 @@ public class ContributorService {
 	public List<Contributor> saveAll(List<Contributor> contributors) {
 		return contributorRepository.saveAll(contributors);
 	}
+	
+	public List<Contributor> findByRepositoryId(String repositoryId) {
+        return contributorRepository.findByRepositoryId(repositoryId);
+    }
 }

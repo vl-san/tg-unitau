@@ -4,10 +4,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -18,15 +17,13 @@ public class Contributor {
 	@Id
 	private String id;
 	private String name;
-	private Integer contributions;
 	private String url;
+
+	@OneToMany(mappedBy = "contributor", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<RepositoryContributor> repositoryContributors = new HashSet<>();
 
 	@OneToMany(mappedBy = "contributor")
 	private Set<Commit> commits = new HashSet<>();
-
-	@ManyToOne
-	@JoinColumn(name = "repository_id")
-	private Repository repository;
 
 	@OneToMany(mappedBy = "contributor")
 	private Set<Issue> issues = new HashSet<>();
@@ -34,12 +31,10 @@ public class Contributor {
 	public Contributor() {
 	}
 
-	public Contributor(String id, String name, Integer contributions, String url, Repository repository) {
+	public Contributor(String id, String name, String url) {
 		this.id = id;
 		this.name = name;
-		this.contributions = contributions;
 		this.url = url;
-		this.repository = repository;
 	}
 
 	public String getId() {
@@ -58,28 +53,12 @@ public class Contributor {
 		this.name = name;
 	}
 
-	public Integer getContributions() {
-		return contributions;
-	}
-
-	public void setContributions(Integer contributions) {
-		this.contributions = contributions;
-	}
-
 	public String getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
 	}
 
 	public Set<Commit> getCommits() {
@@ -89,7 +68,21 @@ public class Contributor {
 	public Set<Issue> getIssues() {
 		return issues;
 	}
-	
+
+	public Set<RepositoryContributor> getRepositoryContributors() {
+		return repositoryContributors;
+	}
+
+	public void addRepositoryContributor(RepositoryContributor repositoryContributor) {
+		this.repositoryContributors.add(repositoryContributor);
+		repositoryContributor.setContributor(this);
+	}
+
+	public void removeRepositoryContributor(RepositoryContributor repositoryContributor) {
+		this.repositoryContributors.remove(repositoryContributor);
+		repositoryContributor.setContributor(null);
+	}
+
 	public void addCommit(Commit commit) {
 		commits.add(commit);
 		commit.setContributor(this);
@@ -99,13 +92,13 @@ public class Contributor {
 		commits.remove(commit);
 		commit.setContributor(null);
 	}
-	
+
 	public void addIssue(Issue issue) {
 		issues.add(issue);
 		issue.setContributor(this);
 	}
 
-	public void removeBranch(Issue issue) {
+	public void removeIssue(Issue issue) {
 		issues.remove(issue);
 		issue.setContributor(null);
 	}
