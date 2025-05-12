@@ -2,7 +2,6 @@ package com.unitau.tgvinicius.deserializer;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -20,6 +19,6 @@ public class CommitDtoDeserializer extends JsonDeserializer<CommitRequestDto> {
 		Instant creation = Instant.parse(rootNode.path("commit").path("author").path("date").asText());
 		String contributorId = rootNode.path("author").path("id").asText();
 		
-		return new CommitRequestDto(sha, authorLogin, creation, List.of(), null, null, contributorId);
+		return new CommitRequestDto(sha, authorLogin, creation, contributorId);
 	}
 }

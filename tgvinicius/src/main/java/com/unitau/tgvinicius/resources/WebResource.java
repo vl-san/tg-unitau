@@ -44,7 +44,7 @@ public class WebResource {
 	@GetMapping
 	public String homePage(Model model) {
 		model.addAttribute("repositories", repositoryService.findAll());
-		return "home";
+		return "dashboard";
 	}
 
 	@Transactional
@@ -55,7 +55,7 @@ public class WebResource {
 		gitHubDataService.saveRepositoryData(dados);
 
 		model.addAttribute("mensagem", "Repositório importado com sucesso!");
-		return "redirect:/view/repositories";
+		return "redirect:/view";
 	}
 
 	@GetMapping("/repository-data")

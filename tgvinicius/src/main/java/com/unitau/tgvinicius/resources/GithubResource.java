@@ -1,7 +1,5 @@
 package com.unitau.tgvinicius.resources;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.unitau.tgvinicius.dto.request.RepositoryDataRequestDto;
-import com.unitau.tgvinicius.dto.response.RepositoryFullResponseDto;
 import com.unitau.tgvinicius.services.GitHubDataService;
 
 @RestController
@@ -40,18 +37,10 @@ public class GithubResource {
 
 		return ResponseEntity.ok(data);
 	}
-	
-    @GetMapping
-    public ResponseEntity<List<RepositoryFullResponseDto>> findAll() {
-        List<RepositoryFullResponseDto> list = gitHubDataService.findAll();
-        return ResponseEntity.ok().body(list);
-    }
     
-//    @DeleteMapping("/limpar")
-//    public ResponseEntity<Void> limparBanco() {
-//        gitHubDataService.deleteAll();
-//        return ResponseEntity.ok().build();
-//    }
-
-
+    @DeleteMapping("/delete-all")
+    public ResponseEntity<Void> deleteAll() {
+        gitHubDataService.deleteAll();
+        return ResponseEntity.ok().build();
+    }
 }

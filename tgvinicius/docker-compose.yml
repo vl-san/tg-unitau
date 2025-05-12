@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: tg-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: tg-unitau
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 7fa7200d
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: tg-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tg-unitau
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 7fa7200d
+
+volumes:
+  postgres_data:

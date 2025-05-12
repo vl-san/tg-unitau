@@ -37,17 +37,6 @@ public class RepositoryService {
 	}
 
 	@Transactional
-	public RepositoryResponseDto  insert(RepositoryRequestDto  dto) {
-		try {
-			Repository entity = RepositoryConverter.dtoToEntity(dto);
-		    Repository saved = repositoryRepository.save(entity);
-		    return RepositoryConverter.fromEntity(saved);
-		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException(e.getMessage());
-		}
-	}
-
-	@Transactional
 	public void delete(String id) {
 		try {
 			repositoryRepository.deleteById(id);
@@ -79,16 +68,4 @@ public class RepositoryService {
 		entity.setForks(dto.forks());
 		entity.setOpenIssues(dto.openIssues());
 	}
-
-	@Transactional
-	public List<RepositoryResponseDto> saveAll(List<RepositoryRequestDto> dtos) {
-		List<Repository> entities = dtos.stream()
-	            .map(RepositoryConverter::dtoToEntity)
-	            .toList();
-		List<Repository> savedRepositories = repositoryRepository.saveAll(entities);
-		return savedRepositories.stream()
-	            .map(RepositoryConverter::fromEntity)
-	            .toList();
-	}
-
 }

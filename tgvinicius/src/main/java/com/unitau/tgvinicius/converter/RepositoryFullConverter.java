@@ -20,7 +20,7 @@ public class RepositoryFullConverter {
 				repository.getRepositoryContributors().stream()
 						.map(rc -> ContributorConverter.fromEntity(rc.getContributor())).toList(),
 				repository.getCommits().stream()
-						.map(CommitFullConverter::fromEntity).toList(),
+						.map(CommitConverter::fromEntityWithBranch).toList(),
 				repository.getIssues().stream()
 						.map(IssueConverter::fromEntity).toList());
 	}

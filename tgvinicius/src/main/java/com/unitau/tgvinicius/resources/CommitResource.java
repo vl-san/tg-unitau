@@ -1,6 +1,5 @@
 package com.unitau.tgvinicius.resources;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,15 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.unitau.tgvinicius.converter.CommitConverter;
-import com.unitau.tgvinicius.dto.request.CommitRequestDto;
 import com.unitau.tgvinicius.dto.response.CommitResponseDto;
 import com.unitau.tgvinicius.entities.Commit;
 import com.unitau.tgvinicius.services.CommitService;
@@ -41,18 +37,18 @@ public class CommitResource {
 	 }
 
 
-	 @PostMapping
-	 public ResponseEntity<CommitResponseDto> insert(@RequestBody CommitRequestDto dto) {
-	     Commit entity = CommitConverter.dtoToEntity(dto);
-	     Commit savedEntity = commitService.insert(entity);
-	     CommitResponseDto responseDto = CommitConverter.fromEntity(savedEntity);
-	     
-	     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-	             .path("/{id}")
-	             .buildAndExpand(savedEntity.getSha())
-	             .toUri();
-	     return ResponseEntity.created(uri).body(responseDto);
-	 }
+//	 @PostMapping
+//	 public ResponseEntity<CommitResponseDto> insert(@RequestBody CommitRequestDto dto) {
+//	     Commit entity = CommitConverter.dtoToEntity(dto);
+//	     Commit savedEntity = commitService.insert(entity);
+//	     CommitResponseDto responseDto = CommitConverter.fromEntity(savedEntity);
+//	     
+//	     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+//	             .path("/{id}")
+//	             .buildAndExpand(savedEntity.getSha())
+//	             .toUri();
+//	     return ResponseEntity.created(uri).body(responseDto);
+//	 }
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable String id) {

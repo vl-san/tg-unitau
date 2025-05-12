@@ -10,25 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.unitau.tgvinicius.client.GithubClient;
-import com.unitau.tgvinicius.converter.BranchConverter;
-import com.unitau.tgvinicius.converter.CommitConverter;
-import com.unitau.tgvinicius.converter.ContributorConverter;
-import com.unitau.tgvinicius.converter.IssueConverter;
-import com.unitau.tgvinicius.converter.RepositoryConverter;
-import com.unitau.tgvinicius.converter.RepositoryFullConverter;
 import com.unitau.tgvinicius.dto.request.BranchRequestDto;
 import com.unitau.tgvinicius.dto.request.CommitRequestDto;
 import com.unitau.tgvinicius.dto.request.ContributorRequestDto;
 import com.unitau.tgvinicius.dto.request.IssueRequestDto;
 import com.unitau.tgvinicius.dto.request.RepositoryDataRequestDto;
 import com.unitau.tgvinicius.dto.request.RepositoryRequestDto;
-import com.unitau.tgvinicius.dto.response.RepositoryFullResponseDto;
+import com.unitau.tgvinicius.embeddables.RepositoryContributorId;
 import com.unitau.tgvinicius.entities.Branch;
 import com.unitau.tgvinicius.entities.Commit;
 import com.unitau.tgvinicius.entities.Contributor;
 import com.unitau.tgvinicius.entities.Issue;
 import com.unitau.tgvinicius.entities.Repository;
 import com.unitau.tgvinicius.entities.RepositoryContributor;
+import com.unitau.tgvinicius.mappers.BranchMapper;
+import com.unitau.tgvinicius.mappers.CommitMapper;
+import com.unitau.tgvinicius.mappers.ContributorMapper;
+import com.unitau.tgvinicius.mappers.IssueMapper;
+import com.unitau.tgvinicius.mappers.RepositoryMapper;
 import com.unitau.tgvinicius.repositories.BranchRepository;
 import com.unitau.tgvinicius.repositories.CommitRepository;
 import com.unitau.tgvinicius.repositories.ContributorRepository;
@@ -55,10 +54,19 @@ public class GitHubDataService {
 	private RepositoryRepository repositoryRepository;
 
 	@Autowired
+	private BranchMapper branchMapper;
+	@Autowired
+	private CommitMapper commitMapper;
+	@Autowired
+	private ContributorMapper contributorMapper;
+	@Autowired
+	private IssueMapper issueMapper;
+	@Autowired
+	private RepositoryMapper repositoryMapper;
+
+	@Autowired
 	private GithubClient githubClient;
 
-
-	
 	public RepositoryDataRequestDto fetchGitHubData(String token, String owner, String repository, String state,
 			Integer page, Integer perPage) {
 		String authToken = "Bearer " + token;
@@ -104,90 +112,54 @@ public class GitHubDataService {
 
 	@Transactional
 	public void saveRepositoryData(RepositoryDataRequestDto data) {
-		Repository repo = saveRepository(data);
+		Repository repo = repositoryMapper.toEntity(data.repository());
+		repositoryRepository.save(repo);
 
-		List<Contributor> contributors = saveContributors(data, repo);
+		Map<String, Contributor> contributorMap = data.contributors().stream().map(contributorMapper::toEntity)
+				.peek(contributor -> contributorRepository.save(contributor))
+				.collect(Collectors.toMap(Contributor::getId, c -> c));
 
-		List<Commit> commits = buildCommits(data, repo, contributors);
-		commitRepository.saveAll(commits);
+		data.contributors().forEach(dto -> {
+			RepositoryContributorId id = new RepositoryContributorId(repo.getId(), dto.id());
 
-		List<Branch> branches = buildBranches(data, commits);
-		branchRepository.saveAll(branches);
+			RepositoryContributor relation = new RepositoryContributor();
+			relation.setId(id);
+			relation.setRepository(repo);
+			relation.setContributor(contributorMap.get(dto.id()));
+			relation.setContributions(dto.contributions());
 
-		List<Issue> issues = buildIssues(data, repo, contributors);
-		issueRepository.saveAll(issues);
-	}
+			repositoryContributorRepository.save(relation);
+		});
 
-	private Repository saveRepository(RepositoryDataRequestDto data) {
-		Repository repo = RepositoryConverter.dtoToEntity(data.repository());
-		return repositoryRepository.save(repo);
-	}
-
-	private List<Contributor> saveContributors(RepositoryDataRequestDto data, Repository repo) {
-		List<Contributor> contributors = new ArrayList<>();
-		for (ContributorRequestDto dto : data.contributors()) {
-			Contributor contributor = ContributorConverter.dtoToEntity(dto);
-			contributorRepository.save(contributor);
-
-			RepositoryContributor rc = new RepositoryContributor();
-			rc.setRepository(repo);
-			rc.setContributor(contributor);
-			rc.setContributions(dto.contributions());
-			repositoryContributorRepository.save(rc);
-
-			contributors.add(contributor);
-		}
-		return contributors;
-	}
-
-	private List<Commit> buildCommits(RepositoryDataRequestDto data, Repository repo, List<Contributor> contributors) {
-		Map<String, Contributor> contributorMap = contributors.stream()
-				.collect(Collectors.toMap(c -> c.getId(), Function.identity()));
-
-		return data.commits().stream().map(dto -> {
-			Commit commit = CommitConverter.dtoToEntity(dto);
+		Map<String, Commit> commitMap = data.commits().stream().map(commitDto -> {
+			Commit commit = commitMapper.toEntity(commitDto);
 			commit.setRepository(repo);
-			commit.setContributor(contributorMap.get(dto.contributorId()));
-			return commit;
-		}).toList();
-	}
+			commit.setContributor(contributorMap.get(commitDto.contributorId()));
+			return commitRepository.save(commit);
+		}).collect(Collectors.toMap(Commit::getSha, c -> c));
 
-	private List<Branch> buildBranches(RepositoryDataRequestDto data, List<Commit> commits) {
-		Map<String, Commit> commitMap = commits.stream()
-				.collect(Collectors.toMap(c -> c.getSha(), Function.identity()));
+		data.branches().forEach(branchDto -> {
+			Branch branch = branchMapper.toEntity(branchDto);
+			branch.setCommit(commitMap.get(branchDto.commitSha()));
+			branchRepository.save(branch);
+		});
 
-		return data.branches().stream().map(dto -> {
-			Branch branch = BranchConverter.dtoToEntity(dto);
-			branch.setCommit(commitMap.get(dto.commitSha()));
-			return branch;
-		}).toList();
-	}
-
-	private List<Issue> buildIssues(RepositoryDataRequestDto data, Repository repo, List<Contributor> contributors) {
-		Map<String, Contributor> contributorMap = contributors.stream()
-				.collect(Collectors.toMap(c -> c.getId(), Function.identity()));
-
-		return data.issues().stream().map(dto -> {
-			Issue issue = IssueConverter.dtoToEntity(dto);
+		data.issues().forEach(issueDto -> {
+			Issue issue = issueMapper.toEntity(issueDto);
 			issue.setRepository(repo);
-			issue.setContributor(contributorMap.get(dto.contributorId()));
-			return issue;
-		}).toList();
+			issue.setContributor(contributorMap.get(issueDto.contributorId()));
+			issueRepository.save(issue);
+		});
+
 	}
-	
-    public List<RepositoryFullResponseDto> findAll() {
-        return repositoryRepository.findAll().stream()
-                .map(RepositoryFullConverter::fromEntity)
-                .toList();
-    }
-    
-    @Transactional
-    public void deleteAll() {
-        repositoryContributorRepository.deleteAll();
-        issueRepository.deleteAll();
-        branchRepository.deleteAll();
-        commitRepository.deleteAll();
-        contributorRepository.deleteAll();
-        repositoryRepository.deleteAll();
-    }
+
+	@Transactional
+	public void deleteAll() {
+		repositoryContributorRepository.deleteAll();
+		issueRepository.deleteAll();
+		branchRepository.deleteAll();
+		commitRepository.deleteAll();
+		contributorRepository.deleteAll();
+		repositoryRepository.deleteAll();
+	}
 }

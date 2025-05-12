@@ -1,87 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f9f9f9;
-        }
+	<head>
+	    <title>Dashboard</title>
+	    <meta charset="UTF-8">
+	    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+	</head>
 
-        h1 {
-            margin-bottom: 30px;
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 60px;
-        }
-
-        .form-section, .menu-section {
-            flex: 1 1 400px;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h3 {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            font-size: 14px;
-            padding: 8px;
-            width: 100%;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 14px;
-            background-color: black;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .menu-section a {
-            margin-top: 15px;
-            display: inline-block;
-            background-color: black;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        .menu-section a:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
 <body>
 
 <h1>Captura e controle de métricas do GitHub</h1>
 <div class="container">
-    
-    <!-- Formulário de adição -->
+
     <div class="form-section">
         <h3>Adicionar novo repositório:</h3>
         <form th:action="@{/view/import}" method="post">
@@ -99,7 +28,6 @@
         </form>
     </div>
 
-    <!-- Seletor de repositórios existentes -->
     <div class="menu-section">
         <h3>Visualizar dados já existentes:</h3>
 

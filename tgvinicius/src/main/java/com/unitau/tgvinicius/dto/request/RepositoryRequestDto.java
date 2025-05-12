@@ -1,7 +1,6 @@
 package com.unitau.tgvinicius.dto.request;
 
 import java.time.Instant;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -19,11 +18,5 @@ public record RepositoryRequestDto
 		Integer stargazers,
 		Integer watchers,
 		Integer forks,
-		Integer openIssues,
-		@JsonInclude(JsonInclude.Include.NON_EMPTY)
-		List<ContributorRequestDto> contributors,
-		@JsonInclude(JsonInclude.Include.NON_EMPTY)
-		List<CommitRequestDto> commits,
-		@JsonInclude(JsonInclude.Include.NON_EMPTY)
-		List<IssueRequestDto> issues){
+		Integer openIssues){
 }

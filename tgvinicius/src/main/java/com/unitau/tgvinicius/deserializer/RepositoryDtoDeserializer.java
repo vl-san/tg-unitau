@@ -2,7 +2,6 @@ package com.unitau.tgvinicius.deserializer;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -26,16 +25,7 @@ public class RepositoryDtoDeserializer extends JsonDeserializer<RepositoryReques
 		Integer forks = Integer.parseInt(rootNode.get("forks_count").asText());
 		Integer openIssues = Integer.parseInt(rootNode.get("open_issues_count").asText());
 
-		return new RepositoryRequestDto(id,
-				name,
-				htmlUrl,
-				created, 
-				updated,
-				size, 
-				stargazers,
-				watchers, 
-				forks,
-				openIssues, 
-				List.of(), List.of(), List.of());
+		return new RepositoryRequestDto(id, name, htmlUrl, created, updated, size,
+				stargazers, watchers, forks, openIssues);
 	}
 }

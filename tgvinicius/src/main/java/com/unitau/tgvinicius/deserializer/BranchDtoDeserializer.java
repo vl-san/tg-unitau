@@ -16,6 +16,6 @@ public class BranchDtoDeserializer extends JsonDeserializer<BranchRequestDto> {
         String name = rootNode.get("name").asText();
         String commitSha = rootNode.path("commit").path("sha").asText();
         
-        return new BranchRequestDto(name, commitSha,  null);
+        return new BranchRequestDto(name, commitSha);
     }
 }
