@@ -12,10 +12,12 @@ git clone https://github.com/vl-san/tg-unitau.git
 ```
 
 3. Rode o container:
-cd local-do-repositório
-
+```
+cd \tg-unitau\tgvinicius
+```
+```
 docker compose up --build
-
+```
 4.Acesse no navegador:
 Interface: http://localhost:8080/view
 
