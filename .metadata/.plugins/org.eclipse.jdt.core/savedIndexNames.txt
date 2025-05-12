@@ -43,6 +43,7 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 2230466825.index
 4224339664.index
 3308603091.index
+3418522601.index
 1035844507.index
 1256666249.index
 4251091364.index
@@ -85,6 +86,7 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 2082141703.index
 889165013.index
 2045242143.index
+1612954702.index
 2198515470.index
 937994527.index
 3709538809.index
@@ -102,8 +104,8 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 3457309253.index
 1523957423.index
 1203881306.index
-3816466450.index
 129862295.index
+3816466450.index
 928232085.index
 620929093.index
 4250251195.index
@@ -116,8 +118,8 @@ INDEX VERSION 1.134+C:\Users\Vinícius\Desktop\tg-unitau-vinicius\.metadata\.plu
 3735246447.index
 2502082813.index
 3862102160.index
-1074360562.index
 2260421833.index
+1074360562.index
 1232038394.index
 4200047023.index
 1931239992.index

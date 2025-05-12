@@ -14,7 +14,6 @@
     <fullyQualifiedTypeName name="com.unitau.tgvinicius.dto.UserDTO"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Id"/>
     <fullyQualifiedTypeName name="jakarta.transaction.Transactional"/>
-    <fullyQualifiedTypeName name="java.util.Set"/>
     <fullyQualifiedTypeName name="com.unitau.tgvinicius.converter.ContributorConverter"/>
     <fullyQualifiedTypeName name="java.util.function.Function"/>
     <fullyQualifiedTypeName name="java.time.Instant"/>
@@ -26,8 +25,10 @@
     <fullyQualifiedTypeName name="com.unitau.tgvinicius.services.exceptions.ConstraintViolationException"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
     <fullyQualifiedTypeName name="jakarta.persistence.CascadeType"/>
-    <fullyQualifiedTypeName name="com.unitau.tgvinicius.entities.Repository"/>
     <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="org.mapstruct.Mapping"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="com.unitau.tgvinicius.entities.Repository"/>
 </qualifiedTypeNameHistroy>
