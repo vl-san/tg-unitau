@@ -5,5 +5,9 @@ public record RepositoryContributorResponseDto(
     String repositoryName,
     String contributorId,
     String contributorName,
-    Integer contributions
+    Integer contributions,
+    Integer commitsCount,
+    Integer issuesCount,
+    Double percentCommits,
+    Double percentIssues
 ) {}

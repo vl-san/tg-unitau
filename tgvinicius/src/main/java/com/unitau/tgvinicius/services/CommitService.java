@@ -64,7 +64,6 @@ public class CommitService {
 
 	private void updateData(Commit entity, Commit obj) {
 		// entity.setSha(obj.getSha());
-		entity.setAuthorLogin(obj.getAuthorLogin());
 		entity.setCreatedAt(obj.getCreatedAt());
 	}
 

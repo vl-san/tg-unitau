@@ -10,7 +10,11 @@ public class RepositoryContributorConverter {
             repositoryContributor.getRepository().getName(),
             repositoryContributor.getContributor().getId(),
             repositoryContributor.getContributor().getName(),
-            repositoryContributor.getContributions()
+            repositoryContributor.getContributions(),
+            repositoryContributor.getCommitsCount(),
+            repositoryContributor.getIssuesCount(),
+            repositoryContributor.getPercentCommits(),
+            repositoryContributor.getPercentIssues()
         );
     }
 }

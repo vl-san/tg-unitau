@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_contributor")
@@ -101,6 +102,16 @@ public class Contributor {
 	public void removeIssue(Issue issue) {
 		issues.remove(issue);
 		issue.setContributor(null);
+	}
+	
+	@Transient
+	public int getCommitCount() {
+	    return commits != null ? commits.size() : 0;
+	}
+
+	@Transient
+	public int getIssueCount() {
+	    return issues != null ? issues.size() : 0;
 	}
 
 	@Override

@@ -16,16 +16,24 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>URL</th>
+				<th>Quantidade de commits</th>
+				<th>Quantidade de issues</th>
+				<th>Porcentagem de commits</th>
+				<th>Porcentagem de issues</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="contributor : ${contributors}">
-                <td th:text="${contributor.id}">id</td>
-                <td th:text="${contributor.name}">name</td>
-                <td>
-                    <a th:href="${contributor.url}" th:text="${contributor.url}" target="_blank">url</a>
-                </td>
-            </tr>
+			<tr th:each="rc : ${repositoryContributors}">
+			    <td th:text="${rc.contributorId}">id</td>
+			    <td th:text="${rc.contributorName}">name</td>
+			    <td>
+			        <a th:href="${rc.contributorUrl}" th:text="${rc.contributorUrl}" target="_blank">url</a>
+			    </td>
+			    <td th:text="${rc.commitsCount}">commits</td>
+			    <td th:text="${rc.issuesCount}">issues</td>
+				<td th:text="${#numbers.formatDecimal(rc.percentCommits, 1, 2)} + '%'"></td>
+				<td th:text="${#numbers.formatDecimal(rc.percentIssues, 1, 2)} + '%'"></td>
+			</tr>
         </tbody>
     </table>
 </body>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.unitau.tgvinicius.dto.response.RepositoryContributorMergedDto;
 import com.unitau.tgvinicius.dto.response.RepositoryContributorResponseDto;
 import com.unitau.tgvinicius.services.RepositoryContributorService;
 
@@ -25,9 +26,15 @@ public class RepositoryContributorResource {
         return ResponseEntity.ok().body(list);
     }
 
+//    @GetMapping("/repository/{repositoryId}")
+//    public ResponseEntity<List<RepositoryContributorResponseDto>> findByRepositoryId(@PathVariable String repositoryId) {
+//        List<RepositoryContributorResponseDto> contributors = repositoryContributorService.findByRepositoryId(repositoryId);
+//        return ResponseEntity.ok(contributors);
+//    }
+    
     @GetMapping("/repository/{repositoryId}")
-    public ResponseEntity<List<RepositoryContributorResponseDto>> findByRepositoryId(@PathVariable String repositoryId) {
-        List<RepositoryContributorResponseDto> contributors = repositoryContributorService.findByRepositoryId(repositoryId);
+    public ResponseEntity<List<RepositoryContributorMergedDto>> findByRepositoryId(@PathVariable String repositoryId) {
+        List<RepositoryContributorMergedDto> contributors = repositoryContributorService.findByRepositoryId(repositoryId);
         return ResponseEntity.ok(contributors);
     }
     

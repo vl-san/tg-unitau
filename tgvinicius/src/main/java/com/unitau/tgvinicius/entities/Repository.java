@@ -1,5 +1,6 @@
 package com.unitau.tgvinicius.entities;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_repository")
@@ -176,12 +178,72 @@ public class Repository {
 
 	public void addRepositoryContributor(RepositoryContributor repositoryContributor) {
 		this.repositoryContributors.add(repositoryContributor);
-		repositoryContributor.setRepository(this); // Define o relacionamento bidirecional
+		repositoryContributor.setRepository(this);
 	}
 
 	public void removeRepositoryContributor(RepositoryContributor repositoryContributor) {
 		this.repositoryContributors.remove(repositoryContributor);
-		repositoryContributor.setRepository(null); // Remove o relacionamento bidirecional
+		repositoryContributor.setRepository(null);
+	}
+	
+	@Transient
+	public int getTotalIssues() {
+	    return issues.size();
+	}
+
+	@Transient
+	public int getTotalCommits() {
+	    return commits.size();
+	}
+
+	@Transient
+	public int getTotalContributors() {
+	    return repositoryContributors.size();
+	}
+	
+	@Transient
+	public double getAvgIssuesPerContributor() {
+	    int contributors = getTotalContributors();
+	    int issues = getTotalIssues();
+	    if (contributors == 0) {
+	        return 0;
+	    }
+	    return (double) issues / contributors;
+	}
+
+	@Transient
+	public double getAvgPercentIssuesPerContributor() {
+	    int issues = getTotalIssues();
+	    if (issues == 0) {
+	        return 0;
+	    }
+	    double avgIssuesPerContributor = getAvgIssuesPerContributor();
+	    return (avgIssuesPerContributor / issues) * 100;
+	}
+	
+	@Transient
+	public double getAvgCommitsPerContributor() {
+	    int contributors = getTotalContributors();
+	    int commits = getTotalCommits();
+	    if (contributors == 0) {
+	        return 0;
+	    }
+	    return (double) commits / contributors;
+	}
+
+	@Transient
+	public double getAvgPercentCommitsPerContributor() {
+	    int commits = getTotalCommits();
+	    if (commits == 0) {
+	        return 0;
+	    }
+	    double avgCommitsPerContributor = getAvgCommitsPerContributor();
+	    return (avgCommitsPerContributor / commits) * 100;
+	}
+	
+	@Transient
+	public Duration getInactivityDuration() {
+	    return Duration.between(updatedAt, Instant.now());
 	}
 
 	@Override

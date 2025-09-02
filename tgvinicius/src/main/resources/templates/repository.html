@@ -27,10 +27,10 @@
             <td>Atualizado em:</td>
             <td th:text="${#dates.format(repository.updatedAt, 'dd/MM/yyyy HH:mm')}"></td>
         </tr>
-        <tr>
-            <td>Tamanho:</td>
-            <td th:text="${repository.size}"></td>
-        </tr>
+		<tr>
+		    <td>Tamanho:</td>
+		    <td th:text="${repository.size + ' KB'}"></td>
+		</tr>
         <tr>
             <td>Stars:</td>
             <td th:text="${repository.stargazers}"></td>
@@ -47,6 +47,40 @@
             <td>Issues abertas:</td>
             <td th:text="${repository.openIssues}"></td>
         </tr>
+		</tr>
+		<tr>
+		    <td>Total issues:</td>
+		    <td th:text="${repository.totalIssues}"></td>
+		</tr>
+		</tr>
+		<tr>
+		    <td>Total commits:</td>
+		    <td th:text="${repository.totalCommits}"></td>
+		</tr>
+		<tr>
+		    <td>Total contribuidores:</td>
+		    <td th:text="${repository.totalContributors}"></td>
+		</tr>
+		<tr>
+		    <td>Total média de issues por contribuidor:</td>
+		    <td th:text="${#numbers.formatDecimal(repository.avgIssuesPerContributor, 1, 2)}"></td>
+		</tr>
+		<tr>
+		    <td>Total porcentagem média de issues por contribuidor:</td>
+		    <td th:text="${#numbers.formatDecimal(repository.avgPercentIssuesPerContributor, 1, 2)} + '%'"></td>
+		</tr>
+		<tr>
+		    <td>Total média de commits por contribuidor:</td>
+		    <td th:text="${#numbers.formatDecimal(repository.avgCommitsPerContributor, 1, 2)}"></td>
+		</tr>
+		<tr>
+		    <td>Total porcentagem média de commits por contribuidor:</td>
+		    <td th:text="${#numbers.formatDecimal(repository.avgPercentCommitsPerContributor, 1, 2)} + '%'"></td>
+		</tr>
+		<tr>
+		    <td>Tempo de inatividade no repositório:</td>
+		    <td th:text="${repository.inactivityDuration}"></td>
+		</tr>
     </table>
 </body>
 </html>

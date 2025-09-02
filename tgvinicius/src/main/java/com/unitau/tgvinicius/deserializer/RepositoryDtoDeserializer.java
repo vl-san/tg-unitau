@@ -21,7 +21,7 @@ public class RepositoryDtoDeserializer extends JsonDeserializer<RepositoryReques
 		Instant updated = Instant.parse(rootNode.get("updated_at").asText());
 		Long size = Long.parseLong(rootNode.get("size").asText());
 		Integer stargazers = Integer.parseInt(rootNode.get("stargazers_count").asText());
-		Integer watchers = Integer.parseInt(rootNode.get("watchers_count").asText());
+		Integer watchers = Integer.parseInt(rootNode.get("subscribers_count").asText());
 		Integer forks = Integer.parseInt(rootNode.get("forks_count").asText());
 		Integer openIssues = Integer.parseInt(rootNode.get("open_issues_count").asText());
 

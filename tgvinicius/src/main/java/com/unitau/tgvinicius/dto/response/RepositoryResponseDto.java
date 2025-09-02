@@ -12,5 +12,13 @@ public record RepositoryResponseDto
 		Integer stargazers,
 		Integer watchers,
 		Integer forks,
-		Integer openIssues) {
+		Integer openIssues,
+		Integer totalIssues,
+		Integer totalCommits,
+		Integer totalContributors,
+		Double avgIssuesPerContributor,
+		Double avgPercentIssuesPerContributor,
+		Double avgCommitsPerContributor,
+		Double avgPercentCommitsPerContributor,
+		String inactivityDuration) {
 }

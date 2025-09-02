@@ -14,16 +14,14 @@
         <thead>
             <tr>
                 <th>SHA</th>
-                <th>Autor (Login)</th>
                 <th>Data de Criação</th>
-                <th>Contribuidor</th>
+                <th>Nome do Contribuidor</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="commit : ${commits}">
                 <td th:text="${commit.sha}">sha</td>
-                <td th:text="${commit.authorLogin}">authorLogin</td>
-                <td th:text="${commit.createdAt}">createdAt</td>
+                <td th:text="${#dates.format(commit.createdAt, 'dd/MM/yyyy HH:mm')}">createdAt</td>
                 <td th:text="${commit.contributor != null ? commit.contributor.name : 'Desconhecido'}">contributor</td>
             </tr>
         </tbody>

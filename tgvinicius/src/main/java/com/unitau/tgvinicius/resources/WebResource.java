@@ -80,12 +80,22 @@ public class WebResource {
 		return "commits";
 	}
 
+//	@GetMapping("/contributors/{repositoryId}")
+//	public String showContributors(@PathVariable String repositoryId, Model model) {
+//		var contributors = contributorService.findByRepositoryId(repositoryId);
+//		var RepositoryContributor = repositoryContributorService.findByRepositoryId(repositoryId);
+//		model.addAttribute("repositoryContributor", RepositoryContributor);
+//		model.addAttribute("contributors", contributors);
+//		model.addAttribute("repositoryId", repositoryId);
+//		return "contributors";
+//	}
+	
 	@GetMapping("/contributors/{repositoryId}")
 	public String showContributors(@PathVariable String repositoryId, Model model) {
-		var contributors = contributorService.findByRepositoryId(repositoryId);
-		model.addAttribute("contributors", contributors);
-		model.addAttribute("repositoryId", repositoryId);
-		return "contributors";
+	    var repositoryContributors = repositoryContributorService.findByRepositoryId(repositoryId);
+	    model.addAttribute("repositoryContributors", repositoryContributors);
+	    model.addAttribute("repositoryId", repositoryId);
+	    return "contributors";
 	}
 
 	@GetMapping("/issues/{repositoryId}")

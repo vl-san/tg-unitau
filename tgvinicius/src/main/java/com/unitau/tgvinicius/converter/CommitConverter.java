@@ -10,7 +10,6 @@ public class CommitConverter {
     public static CommitResponseDto fromEntity(Commit commit) {
         return new CommitResponseDto(
             commit.getSha(),
-            commit.getAuthorLogin(),
             commit.getCreatedAt()
         );
     }
@@ -18,7 +17,6 @@ public class CommitConverter {
     public static CommitFullResponseDto fromEntityWithBranch(Commit commit) {
         return new CommitFullResponseDto(
             commit.getSha(),
-            commit.getAuthorLogin(),
             commit.getCreatedAt(),
             commit.getBranches().stream()
                   .map(branch -> new BranchResponseDto(branch.getName()))

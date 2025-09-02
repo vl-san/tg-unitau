@@ -15,10 +15,9 @@ public class CommitDtoDeserializer extends JsonDeserializer<CommitRequestDto> {
 		JsonNode rootNode = parser.getCodec().readTree(parser);
 
 		String sha = rootNode.get("sha").asText();
-		String authorLogin = rootNode.path("author").path("login").asText();
 		Instant creation = Instant.parse(rootNode.path("commit").path("author").path("date").asText());
 		String contributorId = rootNode.path("author").path("id").asText();
 		
-		return new CommitRequestDto(sha, authorLogin, creation, contributorId);
+		return new CommitRequestDto(sha, creation, contributorId);
 	}
 }

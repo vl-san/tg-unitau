@@ -10,7 +10,6 @@ import com.unitau.tgvinicius.deserializer.CommitDtoDeserializer;
 @JsonDeserialize(using = CommitDtoDeserializer.class)
 public record CommitRequestDto
 		(String sha,
-		String authorLogin,
 		Instant createdAt,
 		String contributorId
 		){

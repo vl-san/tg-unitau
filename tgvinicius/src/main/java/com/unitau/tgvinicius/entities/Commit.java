@@ -20,8 +20,6 @@ public class Commit {
 	@Id
 	@Column(unique = true, nullable = false)
 	private String sha;
-	@Column(name = "author_login")
-	private String authorLogin;
 	@Column(name = "created_at")
 	private Instant createdAt;
 
@@ -39,9 +37,8 @@ public class Commit {
 	public Commit() {
 	}
 
-	public Commit(String sha, String authorLogin, Instant createdAt, Repository repository, Contributor contributor) {
+	public Commit(String sha, Instant createdAt, Repository repository, Contributor contributor) {
 		this.sha = sha;
-		this.authorLogin = authorLogin;
 		this.createdAt = createdAt;
 		this.repository = repository;
 		this.contributor = contributor;
@@ -53,14 +50,6 @@ public class Commit {
 
 	public void setSha(String sha) {
 		this.sha = sha;
-	}
-
-	public String getAuthorLogin() {
-		return authorLogin;
-	}
-
-	public void setAuthorLogin(String authorLogin) {
-		this.authorLogin = authorLogin;
 	}
 
 	public Instant getCreatedAt() {
