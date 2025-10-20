@@ -1,6 +1,9 @@
-# GitHub API de captura de métricas - TG-UNITAU
+# GitHub API de captura de métricas
+Trabalho de Graduação de Análise e Desenvolvimento de Sistemas
+UNITAU - Vinícius Leonardo dos Santos
+vinicius.lsantos@unitau.br
 
-##Passo a passo para rodar a aplicação:
+## Passo a passo para rodar a aplicação:
 
 1. Instale o Docker:  
 https://www.docker.com/products/docker-desktop
